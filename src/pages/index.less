@@ -1,0 +1,37 @@
+@Header_Height: 56px;  // 顶部高度
+@Comp_Container_Width: 280px;  // 左侧宽度
+@Props_Setting: 250px;  // 右侧宽度
+
+.main{
+  width: 100vw;
+  height: 100vh;
+  background-color: #eee;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  .header{
+    width: 100%;
+    height: @Header_Height;
+    background-color: #fff;
+    box-shadow: 0 2px 6px #eee;
+    border-bottom: 1px solid #eee;
+    padding: 0 16px;
+    box-sizing: border-box;
+    color: rgb(0, 119, 216);
+    font-size: 20px;
+    cursor: pointer;
+    .flex;
+  }
+  .container{
+    width: 100%;
+    height: calc(100vh - @Header_Height);
+    overflow: auto;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.flex{
+  display: flex;
+  align-items: center;
+}
