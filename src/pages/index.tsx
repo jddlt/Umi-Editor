@@ -2,13 +2,10 @@ import React, { useEffect, ReactNode } from 'react';
 import { Button } from 'antd';
 import BaseCmp from '@/Components/BaseComp';
 import PropsSetting from '@/Components/PropsSetting';
+import { IDomList } from '@/Components/BaseComp/index.d';
 import { useImmer } from 'use-immer';
 import Pages from '@/Components/Pages';
 import styles from './index.less';
-interface IDomList {
-  Name: string;
-  Comp: ReactNode;
-}
 
 export default () => {
   const [domList, setDomList] = useImmer<IDomList[]>([]);

@@ -1,13 +1,16 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 import { Button, Switch, Input, Card, Form, Row, Col } from 'antd';
-import { ITxpComp } from '@/Components/BaseComp/index.d';
-import { ButtonProps } from 'antd/lib/button';
+import {
+  ITxpComp,
+  IProps,
+  IPropsWithChild,
+} from '@/Components/BaseComp/index.d';
 
 const Config: Record<string, ITxpComp> = {
   TXP_BUTTON_PRIMARY: {
     Name: 'Button',
-    Comp: (props: ButtonProps, style: CSSProperties) => (
-      <Button {...props} style={style} type="primary">
+    Comp: (props: IProps = {}) => (
+      <Button {...props?.props} style={props?.style} type="primary">
         按钮
       </Button>
     ),
@@ -15,59 +18,57 @@ const Config: Record<string, ITxpComp> = {
   },
   TXP_BUTTON: {
     Name: 'Button',
-    Comp: (props: ButtonProps, style: CSSProperties) => <Button>重置</Button>,
+    Comp: (props: IProps = {}) => <Button>重置</Button>,
     Config: {},
   },
   TXP_FORM: {
     Name: 'Form',
-    Comp: (props: ButtonProps, style: CSSProperties) => <Form></Form>,
+    Comp: (props: IProps = {}) => <Form></Form>,
     Config: {},
     Container: true,
   },
   TXP_FORM_ITEM: {
     Name: 'Form.Item',
-    Comp: (props: ButtonProps, style: CSSProperties) => (
-      <Form.Item label="Form.Item"></Form.Item>
+    Comp: (props: IPropsWithChild = {}) => (
+      <Form.Item label="Form.Item">{props.children}</Form.Item>
     ),
     Config: {},
     Container: true,
   },
   TXP_ROW: {
     Name: 'Row',
-    Comp: (props: ButtonProps, style: CSSProperties) => <Row gutter={24}></Row>,
+    Comp: (props: IPropsWithChild = {}) => (
+      <Row gutter={24}>{props.children}</Row>
+    ),
     Config: {},
     Container: true,
   },
   TXP_COL: {
     Name: 'Col',
-    Comp: (props: ButtonProps, style: CSSProperties) => <Col></Col>,
+    Comp: (props: IPropsWithChild = {}) => <Col>{props.children}</Col>,
     Config: {},
     Container: true,
   },
   TXP_INPUT_SEARCH: {
     Name: 'Input',
-    Comp: (props: ButtonProps, style: CSSProperties) => (
+    Comp: (props: IProps = {}) => (
       <Input.Search placeholder="input search text" enterButton />
     ),
     Config: {},
   },
   TXP_SWITCH: {
     Name: 'Switch',
-    Comp: (props: ButtonProps, style: CSSProperties) => (
-      <Switch defaultChecked />
-    ),
+    Comp: (props: IProps = {}) => <Switch defaultChecked />,
     Config: {},
   },
   TXP_SWITCH_DISABLED: {
     Name: 'Switch',
-    Comp: (props: ButtonProps, style: CSSProperties) => (
-      <Switch defaultChecked disabled />
-    ),
+    Comp: (props: IProps = {}) => <Switch defaultChecked disabled />,
     Config: {},
   },
   TXP_CARD: {
     Name: 'Card',
-    Comp: (props: ButtonProps, style: CSSProperties) => (
+    Comp: (props: IPropsWithChild = {}) => (
       <Card
         style={{ width: '300px' }}
         bordered
@@ -80,7 +81,7 @@ const Config: Record<string, ITxpComp> = {
         bodyStyle={{ textAlign: 'center' }}
         size="small"
       >
-        卡片
+        {props.children || '卡片'}
       </Card>
     ),
     Config: {},

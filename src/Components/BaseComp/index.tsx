@@ -1,7 +1,8 @@
-import React, { useEffect, useState, ReactNode } from 'react';
+import React, { useEffect, useState, ReactElement } from 'react';
 import { Tabs, Tree, message } from 'antd';
-import { IDomList } from '@/Components/BaseComp/index.d';
-import { DataNode } from 'antd/lib/tree';
+import { cloneDeep } from 'lodash';
+import { IDomList, ITransData } from '@/Components/BaseComp/index.d';
+import { Draft } from 'immer';
 import styles from './index.less';
 import TxpButton from './Button';
 import TxpSwitch from './Switch';
@@ -14,12 +15,7 @@ const { TabPane } = Tabs;
 
 interface IProps {
   domList: IDomList[];
-  setDomList: (f: (draft: IDomList[]) => void | IDomList) => void;
-}
-interface ITransData extends DataNode {
-  comp: ReactNode;
-  container?: boolean;
-  children: ITransData[];
+  setDomList: (f: (draft: Draft<IDomList[]>) => void | IDomList[]) => void;
 }
 
 export default (props: IProps) => {
@@ -33,6 +29,7 @@ export default (props: IProps) => {
   useEffect(() => {
     const data = domList.map((item, index) => ({
       key: `${item.Name}_${index}`,
+      name: item.Name,
       title: (
         <div
           style={{
@@ -48,23 +45,27 @@ export default (props: IProps) => {
         </div>
       ),
       container: item.Container,
-      children: [],
+      children: item.children || [],
       comp: item.Comp,
     }));
     setTransData([...data]);
   }, [domList]);
 
-  // React.cloneElement
+  const mapComp = (data: ITransData[]): IDomList[] => {
+    console.log('data', data);
 
-  // useEffect(() => {
-  //   const data: IDomList[] = transData.map((item) => {
-  //     return {
-  //       Name: item.title,
-  //       Comp: ,
-  //       Container: item.container
-  //     }
-  //   })
-  // }, [transData])
+    return data.map(item => ({
+      Name: item.name,
+      Container: item.container,
+      children: item.children,
+      Comp: () => (
+        <item.comp key={item.key}>
+          {item.children &&
+            item.children.map(_item => _item.comp && _item.comp({}))}
+        </item.comp>
+      ),
+    }));
+  };
 
   const onDrop = (info: any) => {
     console.log(info);
@@ -93,7 +94,7 @@ export default (props: IProps) => {
       }
     };
 
-    const data = [...transData];
+    const data = cloneDeep(transData);
     let dragObj: ITransData = {} as ITransData;
     loop(data, dragKey, (item, index, arr) => {
       arr.splice(index, 1);
@@ -102,9 +103,13 @@ export default (props: IProps) => {
 
     if (!info.dropToGap) {
       loop(data, dropKey, item => {
-        item.children = item.children || [];
-        // where to insert 示例添加到尾部，可以是随意位置
-        item.children.push(dragObj);
+        try {
+          item.children = item.children || [];
+          // where to insert 示例添加到尾部，可以是随意位置
+          item.children.push(dragObj);
+        } catch (err) {
+          console.warn('err', item, dragObj, err);
+        }
       });
     } else if (
       (info.node.props.children || []).length > 0 && // Has children
@@ -129,7 +134,10 @@ export default (props: IProps) => {
         ar.splice(i + 1, 0, dragObj);
       }
     }
+    console.log('data111', data);
     setTransData([...data]);
+    const DomData = mapComp([...data]);
+    setDomList(() => DomData);
   };
 
   return (
@@ -155,12 +163,15 @@ export default (props: IProps) => {
               // defaultExpandedKeys={this.state.expandedKeys}
               draggable
               blockNode
+              key="key"
               onDragEnter={() => {}}
               onDrop={onDrop}
               treeData={transData}
             />
           ) : (
-            <span>空空的没有DOM!</span>
+            <div style={{ textAlign: 'center', letterSpacing: '1px' }}>
+              空空的没有DOM!{' '}
+            </div>
           )}
         </TabPane>
       </Tabs>

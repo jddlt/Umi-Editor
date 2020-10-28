@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import classnames from 'classnames';
 import useMove from '@/hooks/useMove';
+import { Draft } from 'immer';
 import { message } from 'antd';
 import { IDomList } from '@/Components/BaseComp/index.d';
 import {
@@ -21,7 +22,7 @@ import Config from '@/Components/BaseComp/comp.config';
 
 interface IProps {
   domList: IDomList[];
-  setDomList: (f: (draft: IDomList[]) => void | IDomList) => void;
+  setDomList: (f: (draft: Draft<IDomList[]>) => void | IDomList[]) => void;
 }
 
 export default (props: IProps): JSX.Element => {
@@ -67,6 +68,7 @@ export default (props: IProps): JSX.Element => {
       ))}
     </div>
   ));
+  console.log('domList', domList[0]?.Comp({}));
 
   const SortableComp = SortableElement(({ Comp }: any) => Comp());
 
@@ -78,7 +80,11 @@ export default (props: IProps): JSX.Element => {
     const container = e.currentTarget;
     console.log(name, container);
     setDomList(r => {
-      r.push(Config[name]);
+      r.push({
+        Name: Config[name].Name,
+        Comp: Dom,
+        Container: Config[name].Container,
+      });
     });
   };
 
