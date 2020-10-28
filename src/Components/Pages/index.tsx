@@ -1,22 +1,32 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  ReactElement,
+  ReactNode,
+} from 'react';
 import classnames from 'classnames';
-import { useImmer } from 'use-immer';
 import useMove from '@/hooks/useMove';
-import { message, Button } from 'antd';
-import ReactDom, { createPortal } from 'react-dom';
+import { message } from 'antd';
+import { IDomList } from '@/Components/BaseComp/index.d';
+import {
+  SortableContainer,
+  SortableElement,
+  SortEnd,
+  SortEvent,
+} from 'react-sortable-hoc';
+import ReactDom from 'react-dom';
 import styles from './index.less';
 import Config from '@/Components/BaseComp/comp.config';
 
-const hammerOption = {
-  recognizers: {
-    pinch: { enable: true },
-    rotate: { enable: true },
-  },
-};
+interface IProps {
+  domList: IDomList[];
+  setDomList: (f: (draft: IDomList[]) => void | IDomList) => void;
+}
 
-export default (): JSX.Element => {
-  const [transXY, handleMouseDown] = useMove();
-  const [domList, setDomList] = useImmer<React.ReactElement[]>([]);
+export default (props: IProps): JSX.Element => {
+  const [transXY, handleMouseDown, reset] = useMove();
+  const { domList, setDomList } = props;
   const [scale, setScale] = useState<number>(1);
 
   const handleUpOrDown = (e: KeyboardEvent) => {
@@ -24,16 +34,41 @@ export default (): JSX.Element => {
       e.key == 'ArrowUp' &&
       (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
     ) {
+      // Command + Up 放大
       e.preventDefault();
       setScale(r => r + 0.03);
     } else if (
+      // Command + Down 缩小
       e.key == 'ArrowDown' &&
       (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
     ) {
       e.preventDefault();
       setScale(r => r - 0.03);
+    } else if (e.key === 'r' && e.ctrlKey) {
+      // Ctrl + R 重置
+      reset && reset();
+      setScale(1);
     }
   };
+
+  const SortableCompContainer = SortableContainer(() => (
+    <div
+      className={styles.realContainer}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+    >
+      {domList.map((item, index) => (
+        <SortableComp
+          style={{ zIndex: '10' }}
+          key={index}
+          index={index}
+          Comp={item.Comp}
+        ></SortableComp>
+      ))}
+    </div>
+  ));
+
+  const SortableComp = SortableElement(({ Comp }: any) => Comp());
 
   const handleDrop = function(e: React.DragEvent) {
     e.preventDefault();
@@ -41,18 +76,22 @@ export default (): JSX.Element => {
     const Dom = Config[name].Comp;
     if (!Dom) return message.error(`未找到 ${name} 组件`);
     const container = e.currentTarget;
-    console.log('name', Dom, container);
-    // const outDom = document.createElement('span');
+    console.log(name, container);
     setDomList(r => {
-      r.push(ReactDom.createPortal(Dom as React.ReactElement, container));
+      r.push(Config[name]);
     });
-    // container.appendChild(dom);
-    // console.log('dom', dom);
   };
 
   const handleDragOver = function(e: React.DragEvent) {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleSortEnd = ({ newIndex, oldIndex }: SortEnd, e: SortEvent) => {
+    setDomList(d => {
+      const item = d.splice(oldIndex, 1);
+      d.splice(newIndex, 0, item[0]);
+    });
   };
 
   useEffect(() => {
@@ -65,9 +104,7 @@ export default (): JSX.Element => {
   return (
     <div className={styles['pages']}>
       <article
-        onDrop={handleDrop}
         className={styles.mainBox}
-        onDragOver={handleDragOver}
         style={{
           transition: 'transform .15s',
           transform: `translate(${transXY.x}px, ${transXY.y}px) scale(${scale})`,
@@ -78,9 +115,40 @@ export default (): JSX.Element => {
           <span className={classnames(styles.dot, styles.color2)} />
           <span className={classnames(styles.dot, styles.color3)} />
         </header>
+        <SortableCompContainer
+          pressDelay={0}
+          helperClass={styles.helper}
+          onSortEnd={handleSortEnd}
+        />
+        {/* <SortableCompContainer
+          handleDragOver={handleDragOver}
+          handleDrop={handleDrop}
+        >
+          {domList.map(
+            (item, index) =>
+              item.Comp,
+              // <SortableComp
+              //   key={index}
+              //   index={index}
+              //   Comp={item.Comp}
+              // ></SortableComp>
+          )}
+        </SortableCompContainer> */}
+
+        {/* <div
+          className={styles.realContainer}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+          {domList.map((item, index) => item.Comp)}
+        </div> */}
         {/* 牛逼！！ */}
-        {domList.map(item => item)}
       </article>
+      <div className={styles.tips}>
+        Cmd+Up/Down: 缩放 &nbsp;|&nbsp; Ctrl+R: 重置 &nbsp;|&nbsp; 当前缩放:{' '}
+        {Math.floor(scale * 100)}% &nbsp;|&nbsp; 偏移量：
+        {transXY.x}px {transXY.y}px
+      </div>
     </div>
   );
 };

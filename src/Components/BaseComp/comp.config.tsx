@@ -1,34 +1,73 @@
-import React from 'react';
-import { Button, Switch, Input, Card } from 'antd';
-
-interface ITxpComp {
-  Comp: React.ReactNode | Element;
-  Config: Record<keyof any, any>;
-}
+import React, { CSSProperties } from 'react';
+import { Button, Switch, Input, Card, Form, Row, Col } from 'antd';
+import { ITxpComp } from '@/Components/BaseComp/index.d';
+import { ButtonProps } from 'antd/lib/button';
 
 const Config: Record<string, ITxpComp> = {
   TXP_BUTTON_PRIMARY: {
-    Comp: <Button type="primary">按钮</Button>,
+    Name: 'Button',
+    Comp: (props: ButtonProps, style: CSSProperties) => (
+      <Button {...props} style={style} type="primary">
+        按钮
+      </Button>
+    ),
     Config: { type: 'primary' },
   },
   TXP_BUTTON: {
-    Comp: <Button>重置</Button>,
+    Name: 'Button',
+    Comp: (props: ButtonProps, style: CSSProperties) => <Button>重置</Button>,
     Config: {},
   },
+  TXP_FORM: {
+    Name: 'Form',
+    Comp: (props: ButtonProps, style: CSSProperties) => <Form></Form>,
+    Config: {},
+    Container: true,
+  },
+  TXP_FORM_ITEM: {
+    Name: 'Form.Item',
+    Comp: (props: ButtonProps, style: CSSProperties) => (
+      <Form.Item label="Form.Item"></Form.Item>
+    ),
+    Config: {},
+    Container: true,
+  },
+  TXP_ROW: {
+    Name: 'Row',
+    Comp: (props: ButtonProps, style: CSSProperties) => <Row gutter={24}></Row>,
+    Config: {},
+    Container: true,
+  },
+  TXP_COL: {
+    Name: 'Col',
+    Comp: (props: ButtonProps, style: CSSProperties) => <Col></Col>,
+    Config: {},
+    Container: true,
+  },
   TXP_INPUT_SEARCH: {
-    Comp: <Input.Search placeholder="input search text" enterButton />,
+    Name: 'Input',
+    Comp: (props: ButtonProps, style: CSSProperties) => (
+      <Input.Search placeholder="input search text" enterButton />
+    ),
     Config: {},
   },
   TXP_SWITCH: {
-    Comp: <Switch defaultChecked />,
+    Name: 'Switch',
+    Comp: (props: ButtonProps, style: CSSProperties) => (
+      <Switch defaultChecked />
+    ),
     Config: {},
   },
   TXP_SWITCH_DISABLED: {
-    Comp: <Switch defaultChecked disabled />,
+    Name: 'Switch',
+    Comp: (props: ButtonProps, style: CSSProperties) => (
+      <Switch defaultChecked disabled />
+    ),
     Config: {},
   },
   TXP_CARD: {
-    Comp: (
+    Name: 'Card',
+    Comp: (props: ButtonProps, style: CSSProperties) => (
       <Card
         style={{ width: '300px' }}
         bordered
@@ -45,6 +84,7 @@ const Config: Record<string, ITxpComp> = {
       </Card>
     ),
     Config: {},
+    Container: true,
   },
 };
 

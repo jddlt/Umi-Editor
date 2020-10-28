@@ -8,6 +8,7 @@ interface ICoordinate {
 const useMove = (): [
   { x: number; y: number },
   (e: React.MouseEvent) => void,
+  () => void,
 ] => {
   const [transXY, setTransXY] = useState<ICoordinate>({ x: 0, y: 0 });
   const [isMove, setIsMove] = useState<boolean>(false);
@@ -30,6 +31,11 @@ const useMove = (): [
       x: preXY.x + moveX,
       y: preXY.y + moveY,
     });
+  };
+
+  const reset = () => {
+    setPreXY({ x: 0, y: 0 });
+    setTransXY({ x: 0, y: 0 });
   };
 
   const handleMouseUp = (e: MouseEvent): void => {
@@ -57,7 +63,7 @@ const useMove = (): [
     };
   }, [handleMouseUp]);
 
-  return [transXY, handleMouseDown];
+  return [transXY, handleMouseDown, reset];
 };
 
 export default useMove;
