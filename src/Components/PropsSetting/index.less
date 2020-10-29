@@ -1,11 +1,28 @@
-
+@import './../../pages/index.less';
 
 .propsContainer{
-  width: 250px;
+  width: @Props_Setting;
   height: 100%;
-  overflow: auto;
   position: relative;
   z-index: 2;
-  background-color: rgb(0, 180, 24);
+  overflow: hidden;
+  padding: 0 12px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+.tabContainer{
+  width: 100%;
+  position: relative;
+  height: calc(100vh - @Header_Height - 46px);
+  overflow: auto;
+  padding-bottom: 44px;
+}
+.saveButton{
+  position: absolute;
+  width: 70%;
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+  bottom: 14px;
 }
 

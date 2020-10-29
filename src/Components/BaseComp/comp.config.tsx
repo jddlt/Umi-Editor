@@ -7,7 +7,7 @@ import {
 } from '@/Components/BaseComp/index.d';
 
 const Config: Record<string, ITxpComp> = {
-  TXP_BUTTON_PRIMARY: {
+  TXP_BUTTON: {
     Name: 'Button',
     Comp: (props: IProps = {}) => (
       <Button {...props?.props} style={props?.style} type="primary">
@@ -15,11 +15,6 @@ const Config: Record<string, ITxpComp> = {
       </Button>
     ),
     Config: { type: 'primary' },
-  },
-  TXP_BUTTON: {
-    Name: 'Button',
-    Comp: (props: IProps = {}) => <Button>重置</Button>,
-    Config: {},
   },
   TXP_FORM: {
     Name: 'Form',

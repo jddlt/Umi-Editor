@@ -1,6 +1,6 @@
 @Header_Height: 56px;  // 顶部高度
 @Comp_Container_Width: 280px;  // 左侧宽度
-@Props_Setting: 250px;  // 右侧宽度
+@Props_Setting: 280px;  // 右侧宽度
 
 .main{
   width: 100vw;
@@ -17,10 +17,12 @@
     border-bottom: 1px solid #eee;
     padding: 0 16px;
     box-sizing: border-box;
-    color: rgb(0, 119, 216);
-    font-size: 20px;
     cursor: pointer;
     .flex;
+    h1{
+      color: rgb(0, 119, 216);
+      font-size: 20px;
+    }
   }
   .container{
     width: 100%;
@@ -33,5 +35,6 @@
 
 .flex{
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }

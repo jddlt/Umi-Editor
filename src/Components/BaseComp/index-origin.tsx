@@ -4,7 +4,12 @@ import cloneDeep from 'lodash/cloneDeep';
 import { IDomList, ITransData } from '@/Components/BaseComp/index.d';
 import { Draft } from 'immer';
 import styles from './index.less';
-import AntdComp from '@/Components/Antd';
+import { PreviewButton as TxpButton } from './Button';
+import TxpSwitch from './Switch';
+import TxpInput from './Input';
+import { PreviewCard as TxpCard } from './Card';
+import TxpForm from './Form';
+import TxpRow from './Row';
 
 const { TabPane } = Tabs;
 
@@ -134,17 +139,19 @@ export default (props: IProps) => {
 
   return (
     <div className={styles['baseCmpContainer']}>
-      <Tabs
-        defaultActiveKey="Comp"
-        onChange={() => {}}
-        style={{ padding: '0 12px' }}
-      >
+      <Tabs defaultActiveKey="Comp" onChange={() => {}}>
         <TabPane tab="基础组件" key="Comp">
-          <div className={styles.tabContainer}>
-            {Object.entries(AntdComp).map(([_, Item]) => (
-              <Item.Preview onDragStart={handleDragStart} />
-            ))}
-          </div>
+          <TxpButton onDragStart={handleDragStart} />
+          <br />
+          <TxpInput onDragStart={handleDragStart} />
+          <br />
+          <TxpSwitch onDragStart={handleDragStart} />
+          <br />
+          <TxpCard onDragStart={handleDragStart} />
+          <br />
+          <TxpForm onDragStart={handleDragStart} />
+          <br />
+          <TxpRow onDragStart={handleDragStart} />
         </TabPane>
         <TabPane tab="页面结构" key="tree">
           {transData.length > 0 ? (

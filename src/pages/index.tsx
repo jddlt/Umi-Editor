@@ -1,4 +1,9 @@
-import React, { useEffect, ReactNode } from 'react';
+import React, {
+  useEffect,
+  ReactNode,
+  createContext,
+  createFactory,
+} from 'react';
 import { Button } from 'antd';
 import BaseCmp from '@/Components/BaseComp';
 import PropsSetting from '@/Components/PropsSetting';
@@ -12,10 +17,20 @@ export default () => {
   useEffect(() => {
     document.body.style.margin = '0';
   }, []);
-
+  // createContext
   return (
     <div className={styles.main}>
-      <header className={styles.header}>Umi-Txp-Editor</header>
+      <header className={styles.header}>
+        <h1>Umi-Txp-Editor</h1>
+        <div>
+          <Button shape="round" style={{ marginRight: '12px' }}>
+            清除
+          </Button>
+          <Button type="primary" shape="round">
+            保存
+          </Button>
+        </div>
+      </header>
       <div className={styles.container}>
         <BaseCmp domList={domList} setDomList={setDomList} />
         <Pages domList={domList} setDomList={setDomList} />

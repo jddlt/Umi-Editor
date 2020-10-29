@@ -1,22 +1,10 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  ReactElement,
-  ReactNode,
-} from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import useMove from '@/hooks/useMove';
+import useKeyPress from '@/hooks/useKeyPress';
 import { Draft } from 'immer';
 import { message } from 'antd';
 import { IDomList } from '@/Components/BaseComp/index.d';
-import {
-  SortableContainer,
-  SortableElement,
-  SortEnd,
-  SortEvent,
-} from 'react-sortable-hoc';
-import ReactDom from 'react-dom';
 import styles from './index.less';
 import Config from '@/Components/BaseComp/comp.config';
 
@@ -27,51 +15,16 @@ interface IProps {
 
 export default (props: IProps): JSX.Element => {
   const [transXY, handleMouseDown, reset] = useMove();
+  const [scale] = useKeyPress(reset);
   const { domList, setDomList } = props;
-  const [scale, setScale] = useState<number>(1);
 
-  const handleUpOrDown = (e: KeyboardEvent) => {
-    if (
-      e.key == 'ArrowUp' &&
-      (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
-    ) {
-      // Command + Up 放大
-      e.preventDefault();
-      setScale(r => r + 0.03);
-    } else if (
-      // Command + Down 缩小
-      e.key == 'ArrowDown' &&
-      (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
-    ) {
-      e.preventDefault();
-      setScale(r => r - 0.03);
-    } else if (e.key === 'r' && e.ctrlKey) {
-      // Ctrl + R 重置
-      reset && reset();
-      setScale(1);
-    }
+  // 拖拽结束
+  const handleDragOver = function(e: React.DragEvent) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
   };
 
-  const SortableCompContainer = SortableContainer(() => (
-    <div
-      className={styles.realContainer}
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
-    >
-      {domList.map((item, index) => (
-        <SortableComp
-          style={{ zIndex: '10' }}
-          key={index}
-          index={index}
-          Comp={item.Comp}
-        ></SortableComp>
-      ))}
-    </div>
-  ));
-  console.log('domList', domList[0]?.Comp({}));
-
-  const SortableComp = SortableElement(({ Comp }: any) => Comp());
-
+  // 拖拽松开
   const handleDrop = function(e: React.DragEvent) {
     e.preventDefault();
     const name = e.dataTransfer.getData('name');
@@ -88,25 +41,6 @@ export default (props: IProps): JSX.Element => {
     });
   };
 
-  const handleDragOver = function(e: React.DragEvent) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-  };
-
-  const handleSortEnd = ({ newIndex, oldIndex }: SortEnd, e: SortEvent) => {
-    setDomList(d => {
-      const item = d.splice(oldIndex, 1);
-      d.splice(newIndex, 0, item[0]);
-    });
-  };
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleUpOrDown, false);
-    return () => {
-      document.removeEventListener('keydown', handleUpOrDown, false);
-    };
-  }, [handleUpOrDown]);
-
   return (
     <div className={styles['pages']}>
       <article
@@ -121,33 +55,14 @@ export default (props: IProps): JSX.Element => {
           <span className={classnames(styles.dot, styles.color2)} />
           <span className={classnames(styles.dot, styles.color3)} />
         </header>
-        <SortableCompContainer
-          pressDelay={0}
-          helperClass={styles.helper}
-          onSortEnd={handleSortEnd}
-        />
-        {/* <SortableCompContainer
-          handleDragOver={handleDragOver}
-          handleDrop={handleDrop}
-        >
-          {domList.map(
-            (item, index) =>
-              item.Comp,
-              // <SortableComp
-              //   key={index}
-              //   index={index}
-              //   Comp={item.Comp}
-              // ></SortableComp>
-          )}
-        </SortableCompContainer> */}
 
-        {/* <div
+        <div
           className={styles.realContainer}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
-          {domList.map((item, index) => item.Comp)}
-        </div> */}
+          {domList.map((item, index) => item.Comp({}))}
+        </div>
         {/* 牛逼！！ */}
       </article>
       <div className={styles.tips}>

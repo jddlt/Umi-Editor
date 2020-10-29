@@ -1,5 +1,4 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import { ButtonProps } from 'antd/lib/button';
 import { DataNode } from 'antd/lib/tree';
 
 export type IComp = (props: IProps | IPropsWithChild) => React.ReactElement;
@@ -11,11 +10,11 @@ export interface ITxpComp {
   Container?: boolean;
 }
 
-export interface IProps {
-  props?: ButtonProps;
+export interface IProps<T> {
+  props?: T;
   style?: CSSProperties;
 }
-export interface IPropsWithChild extends IProps {
+export interface IPropsWithChild<T> extends IProps<T> {
   children?: ReactNode;
 }
 
@@ -31,4 +30,19 @@ export interface ITransData extends DataNode {
   children: ITransData[];
   container?: boolean;
   name: string;
+}
+export interface ILabelinValue {
+  label: string;
+  value: string | undefined;
+}
+
+export interface IFormItemConfig {
+  title: string;
+  key: string;
+  type: 'Input' | 'Switch' | 'Select' | 'Radio';
+  defaultValue?: string | boolean;
+  options?: string[];
+  placeholder?: string;
+  required?: boolean;
+  requiredMsg?: string;
 }

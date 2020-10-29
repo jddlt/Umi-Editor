@@ -1,17 +1,27 @@
+@import './../../pages/index.less';
 .baseCmpContainer{
   width: 280px;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   background-color: #fff;
-  padding: 10px 16px;
-  box-sizing: border-box;
   border-right: 1px solid #eee;
   box-shadow: 0 1px 6px #eee;
   position: relative;
   z-index: 2;
 }
+.tabContainer{
+  width: 100%;
+  position: relative;
+  height: calc(100vh - @Header_Height - 46px);
+  overflow: auto;
+  padding: 10px 6px;
+  box-sizing: border-box;
+}
 .flexc{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.tabContainer>*{
+  margin-bottom: 12px !important;
 }
