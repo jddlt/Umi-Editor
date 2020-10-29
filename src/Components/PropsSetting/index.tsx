@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tabs, Form, Button } from 'antd';
 import { AppleOutlined, AndroidOutlined } from '@ant-design/icons';
 import styles from './index.less';
@@ -14,12 +14,16 @@ export default () => {
     console.log('val', val);
   };
 
+  useEffect(() => {
+    form.setFieldsValue(TxpButton.Props);
+  }, [TxpButton.Props]);
+
   return (
     <div className={styles['propsContainer']}>
       <Tabs defaultActiveKey="props">
         <TabPane tab={<span>属性配置</span>} key="props">
           <div className={styles.tabContainer}>
-            <Form form={form} initialValues={TxpButton.Props}>
+            <Form form={form}>
               {TxpButton.Config.map(item => renderFormItem(item))}
             </Form>
           </div>

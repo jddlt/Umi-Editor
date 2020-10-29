@@ -1,12 +1,12 @@
 import React, { CSSProperties } from 'react';
 import { Button, Card } from 'antd';
-import { IFormItemConfig, IProps } from '@/Components/BaseComp/index.d';
+import {
+  IFormItemConfig,
+  IProps,
+  IPreviewProps,
+  IAntdComp,
+} from '@/Components/BaseComp/index.d';
 import { ButtonProps } from 'antd/lib/button';
-
-interface IPreviewProps {
-  children?: React.ReactNode;
-  onDragStart: (e: React.DragEvent, name: string) => void;
-}
 
 const gridStyle: CSSProperties = {
   width: '100%',
@@ -69,7 +69,7 @@ const ButtonConfig: IFormItemConfig[] = [
 ];
 
 // 渲染Button
-export const TxpButton = (props: IProps<ButtonProps>) => {
+export const TxpButton = (props: IProps<ButtonProps> = {}) => {
   return (
     <Button {...props?.props} style={props?.style} type="primary">
       {props.props?.children}
@@ -85,7 +85,7 @@ export const PreviewButton = (props: IPreviewProps): JSX.Element => {
         style={gridStyle}
         draggable
         onDragStart={(e: React.DragEvent) => {
-          props.onDragStart(e, 'TXP_BUTTON');
+          props.onDragStart(e, 'Button');
         }}
       >
         <Button type="primary">按钮</Button>
@@ -111,4 +111,4 @@ export default {
   Props: TxpButtonProps,
   Style: ButtonStyle,
   Container: false,
-};
+} as IAntdComp<ButtonProps>;

@@ -150,7 +150,6 @@ export default (props: IProps) => {
           {transData.length > 0 ? (
             <Tree
               className="draggable-tree"
-              // defaultExpandedKeys={this.state.expandedKeys}
               draggable
               blockNode
               key="key"

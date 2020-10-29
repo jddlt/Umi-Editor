@@ -1,12 +1,12 @@
 import React, { CSSProperties, useMemo } from 'react';
-import { Button, Card } from 'antd';
-import { IFormItemConfig, IProps } from '@/Components/BaseComp/index.d';
+import { Card } from 'antd';
+import {
+  IFormItemConfig,
+  IProps,
+  IPreviewProps,
+  IAntdComp,
+} from '@/Components/BaseComp/index.d';
 import { CardProps } from 'antd/lib/card';
-
-interface IPreviewProps {
-  children?: React.ReactNode;
-  onDragStart: (e: React.DragEvent, name: string) => void;
-}
 
 const gridStyle: CSSProperties = {
   width: '100%',
@@ -41,7 +41,7 @@ const CardConfig: IFormItemConfig[] = [
 ];
 
 // 渲染Button
-export const TxpCard = (props: IProps<CardProps>) => {
+export const TxpCard = (props: IProps<CardProps> = {}) => {
   return (
     <Card {...props?.props} style={props?.style}>
       {props.props?.children}
@@ -57,7 +57,7 @@ export const PreviewCard = (props: IPreviewProps): JSX.Element => {
         style={gridStyle as CSSProperties}
         draggable
         onDragStart={(e: React.DragEvent) => {
-          props.onDragStart(e, 'TXP_CARD');
+          props.onDragStart(e, 'Card');
         }}
       >
         <Card
@@ -92,4 +92,4 @@ export default {
   Props: TxpCardProps,
   Style: CardStyle,
   Container: true,
-};
+} as IAntdComp<CardProps>;

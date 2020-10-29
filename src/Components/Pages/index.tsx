@@ -6,7 +6,7 @@ import { Draft } from 'immer';
 import { message } from 'antd';
 import { IDomList } from '@/Components/BaseComp/index.d';
 import styles from './index.less';
-import Config from '@/Components/BaseComp/comp.config';
+import AntdComp from '@/Components/Antd';
 
 interface IProps {
   domList: IDomList[];
@@ -28,21 +28,40 @@ export default (props: IProps): JSX.Element => {
   const handleDrop = function(e: React.DragEvent) {
     e.preventDefault();
     const name = e.dataTransfer.getData('name');
-    const Dom = Config[name].Comp;
+    const comp = AntdComp[name];
+    const Dom = comp.Comp;
+    console.log('Dom', <Dom />);
+
     if (!Dom) return message.error(`未找到 ${name} 组件`);
-    const container = e.currentTarget;
-    console.log(name, container);
+    // const container = e.currentTarget;
+    // console.log(name, container);
     setDomList(r => {
       r.push({
-        Name: Config[name].Name,
-        Comp: Dom,
-        Container: Config[name].Container,
+        key: `${item.Name}_${index}`,
+        name: item.Name,
+        title: (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <span style={{ fontSize: '15px' }}>{item.Name}</span>
+            {item.Container && (
+              <span style={{ color: 'skyblue', fontSize: '12px' }}>容</span>
+            )}
+          </div>
+        ),
+        container: item.Container,
+        children: item.children || [],
+        comp: item.Comp,
       });
     });
   };
 
   return (
-    <div className={styles['pages']}>
+    <div className={styles.pages}>
       <article
         className={styles.mainBox}
         style={{
@@ -65,11 +84,11 @@ export default (props: IProps): JSX.Element => {
         </div>
         {/* 牛逼！！ */}
       </article>
-      <div className={styles.tips}>
+      <footer className={styles.tips}>
         Cmd+Up/Down: 缩放 &nbsp;|&nbsp; Ctrl+R: 重置 &nbsp;|&nbsp; 当前缩放:{' '}
         {Math.floor(scale * 100)}% &nbsp;|&nbsp; 偏移量：
         {transXY.x}px {transXY.y}px
-      </div>
+      </footer>
     </div>
   );
 };

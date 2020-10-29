@@ -7,6 +7,7 @@ export const renderFormItem = (props: IFormItemConfig) => {
     <Form.Item
       name={props.key}
       label={<span>{props.title}</span>}
+      valuePropName={props.type === 'Switch' ? 'checked' : 'value'}
       rules={[
         {
           required: props.required,
