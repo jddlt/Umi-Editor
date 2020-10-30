@@ -29,11 +29,6 @@ const ButtonConfig: IFormItemConfig[] = [
     options: ['default', 'primary', 'ghost', 'dashed', 'link', 'text'],
   },
   {
-    title: '危险按钮',
-    dataIndex: 'danger',
-    type: 'Switch',
-  },
-  {
     title: '图标',
     dataIndex: 'icon',
     type: 'Input',
@@ -57,6 +52,16 @@ const ButtonConfig: IFormItemConfig[] = [
     type: 'Switch',
   },
   {
+    title: '危险按钮',
+    dataIndex: 'danger',
+    type: 'Switch',
+  },
+  {
+    title: '禁用(有BUG)',
+    dataIndex: 'disabled',
+    type: 'Switch',
+  },
+  {
     title: '幽灵按钮',
     dataIndex: 'ghost',
     type: 'Switch',
@@ -71,12 +76,7 @@ const ButtonConfig: IFormItemConfig[] = [
 // 渲染Button
 export const TxpButton = (props: IPropsWithChild<ButtonProps> = {}) => {
   return (
-    <Button
-      {...props?.props}
-      onClick={props.onClick}
-      style={props?.style}
-      type="primary"
-    >
+    <Button {...props?.props} onClick={props.onClick} style={props?.style}>
       {props.children || props.props?.children}
     </Button>
   );

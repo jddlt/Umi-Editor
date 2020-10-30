@@ -1,6 +1,6 @@
 @import './../../pages/index.less';
 
-.propsContainer{
+.propsContainer {
   width: @Props_Setting;
   height: 100%;
   position: relative;
@@ -10,19 +10,23 @@
   box-sizing: border-box;
   background-color: #fff;
 }
-.tabContainer{
+.tabContainer {
   width: 100%;
   position: relative;
   height: calc(100vh - @Header_Height - 46px);
   overflow: auto;
   padding-bottom: 44px;
 }
-.saveButton{
+.saveButton {
   position: absolute;
   width: 70%;
   left: 50%;
   z-index: 5;
   transform: translateX(-50%);
-  bottom: 14px;
+  bottom: 24px;
 }
-
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

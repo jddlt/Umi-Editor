@@ -12,7 +12,7 @@ import AntdComp from '@/Components/Antd';
 export default (props: IGloableProps): JSX.Element => {
   const [transXY, handleMouseDown, reset] = useMove();
   const [scale] = useKeyPress(reset);
-  const { domList, setDomList } = props;
+  const { domList, setDomList, current, setCurrent } = props;
 
   // 拖拽结束
   const handleDragOver = function(e: React.DragEvent) {
@@ -41,8 +41,10 @@ export default (props: IGloableProps): JSX.Element => {
 
   const handleClick = (key: string) => {
     const data = [...domList];
+    findCompByKey(data, key, item => {
+      setCurrent({ ...item });
+    });
   };
-
   return (
     <div className={styles.pages}>
       <article

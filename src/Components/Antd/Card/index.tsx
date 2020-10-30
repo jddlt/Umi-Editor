@@ -36,7 +36,7 @@ const CardConfig: IFormItemConfig[] = [
     title: '卡片大小',
     dataIndex: 'size',
     type: 'Radio',
-    options: ['middle', 'small'],
+    options: ['default', 'small'],
   },
 ];
 

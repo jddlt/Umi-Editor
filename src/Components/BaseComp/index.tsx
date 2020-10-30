@@ -8,7 +8,7 @@ import AntdComp from '@/Components/Antd';
 const { TabPane } = Tabs;
 
 export default (props: IGloableProps) => {
-  const { domList, setDomList } = props;
+  const { domList, setDomList, setCurrent } = props;
   function handleDragStart(e: React.DragEvent, name: string) {
     e.dataTransfer.dropEffect = 'move';
     e.dataTransfer.setData('name', name);
@@ -90,6 +90,7 @@ export default (props: IGloableProps) => {
               key="key"
               onDragEnter={() => {}}
               onDrop={onDrop}
+              onClick={(_, b) => setCurrent({ ...b })}
               treeData={domList}
             />
           ) : (

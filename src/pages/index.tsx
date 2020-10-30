@@ -8,7 +8,7 @@ import styles from './index.less';
 
 export default () => {
   const [domList, setDomList] = useState<IDomItem<any>[]>([]);
-  const [currentKey, setCurrentKey] = useState<string>('');
+  const [current, setCurrent] = useState<IDomItem<any>>({} as IDomItem<any>);
   useEffect(() => {
     document.body.style.margin = '0';
   }, []);
@@ -16,8 +16,8 @@ export default () => {
   const GloableData: IGloableProps = {
     domList,
     setDomList,
-    currentKey,
-    setCurrentKey,
+    current,
+    setCurrent,
   };
   return (
     <div className={styles.main}>

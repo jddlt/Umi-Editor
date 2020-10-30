@@ -1,6 +1,6 @@
 @import './../../pages/index.less';
 
-.pages{
+.pages {
   flex: 1;
   height: 100%;
   display: flex;
@@ -11,7 +11,7 @@
   overflow: hidden;
   z-index: 1;
   background-color: #f5f5f5;
-  .mainBox{
+  .mainBox {
     width: calc(100vw - @Comp_Container_Width - @Props_Setting - 100px);
     height: calc(100vh - @Header_Height - 200px);
     min-height: 300px;
@@ -20,7 +20,7 @@
     position: relative;
     overflow: hidden;
     background-color: #fff;
-    .mainBoxHeader{
+    .mainBoxHeader {
       width: 100%;
       // position: absolute;
       // left: 0;
@@ -34,17 +34,23 @@
       cursor: move;
       border-top-right-radius: 6px;
       box-sizing: border-box;
-      .dot{
+      .dot {
         width: 12px;
         height: 12px;
         border-radius: 50%;
         margin-right: 8px;
       }
-      .color1{ background-color: #ec544d; }
-      .color2{ background-color: #f6bf50; }
-      .color3{ background-color: #63c555; }
+      .color1 {
+        background-color: #ec544d;
+      }
+      .color2 {
+        background-color: #f6bf50;
+      }
+      .color3 {
+        background-color: #63c555;
+      }
     }
-    .realContainer{
+    .realContainer {
       width: 100%;
       height: 100%;
       overflow: auto;
@@ -52,14 +58,14 @@
       box-sizing: border-box;
     }
   }
-  .tips{
+  .tips {
     position: absolute;
     left: 50%;
     bottom: 20px;
     height: 36px;
     border-radius: 18px;
     width: 80%;
-    background-color: rgba(0, 0, 0, .05);
+    background-color: rgba(0, 0, 0, 0.05);
     color: #000;
     text-align: center;
     font-size: 15px;
@@ -69,14 +75,21 @@
   }
 }
 
-.helper{
-	z-index: 3;
-	transition-delay: 0;
-	transition-duration: .15s;
+.helper {
+  z-index: 3;
+  transition-delay: 0;
+  transition-duration: 0.15s;
 }
-.mainBoxHeader~div>*:hover{
+.mainBoxHeader ~ div > * {
+  transition: transform 0.2s;
+  z-index: 3;
+}
+.mainBoxHeader ~ div > *:hover {
   position: relative;
   z-index: 2;
   cursor: pointer;
-  outline: 1px dashed red !important;
+  outline: 1px dashed red;
+}
+.mainBoxHeader ~ div > *:active {
+  transform: scale(0.95);
 }

@@ -9,8 +9,8 @@ import React, {
 export interface IGloableProps {
   domList: IDomItem<any>[];
   setDomList: Dispatch<SetStateAction<IDomItem<any>[]>>;
-  currentKey: string;
-  setCurrentKey?: Dispatch<SetStateAction<string>>;
+  current: IDomItem<any>;
+  setCurrent: Dispatch<SetStateAction<IDomItem<any>>>;
 }
 
 export interface IAntdComp<T> {

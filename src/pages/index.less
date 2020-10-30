@@ -1,15 +1,15 @@
-@Header_Height: 56px;  // 顶部高度
-@Comp_Container_Width: 280px;  // 左侧宽度
-@Props_Setting: 280px;  // 右侧宽度
+@Header_Height: 56px; // 顶部高度
+@Comp_Container_Width: 300px; // 左侧宽度
+@Props_Setting: 280px; // 右侧宽度
 
-.main{
+.main {
   width: 100vw;
   height: 100vh;
   background-color: #eee;
   margin: 0;
   padding: 0;
   user-select: none;
-  .header{
+  .header {
     width: 100%;
     height: @Header_Height;
     background-color: #fff;
@@ -19,12 +19,12 @@
     box-sizing: border-box;
     cursor: pointer;
     .flex;
-    h1{
+    h1 {
       color: rgb(0, 119, 216);
       font-size: 20px;
     }
   }
-  .container{
+  .container {
     width: 100%;
     height: calc(100vh - @Header_Height);
     overflow: auto;
@@ -33,7 +33,7 @@
   }
 }
 
-.flex{
+.flex {
   display: flex;
   justify-content: space-between;
   align-items: center;
