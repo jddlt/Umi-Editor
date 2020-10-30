@@ -41,7 +41,6 @@ const useMove = (): [
   const handleMouseUp = (e: MouseEvent): void => {
     setIsMove(false);
     setPreXY(transXY);
-    console.log('mouseUp');
   };
 
   useEffect(() => {

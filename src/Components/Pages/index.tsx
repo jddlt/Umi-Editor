@@ -3,17 +3,13 @@ import classnames from 'classnames';
 import useMove from '@/hooks/useMove';
 import useKeyPress from '@/hooks/useKeyPress';
 import { message } from 'antd';
-import { IDomItem, IAntdComp } from '@/Components/BaseComp/index.d';
+import { IGloableProps, IAntdComp } from '@/Components/BaseComp/index.d';
+import { findCompByKey } from '@/utils/index';
 import { RenderDomConfigToReactDom } from '@/layout/RenderDomConfigToReactDom';
 import styles from './index.less';
 import AntdComp from '@/Components/Antd';
 
-interface IProps {
-  domList: IDomItem<any>[];
-  setDomList: Dispatch<SetStateAction<IDomItem<any>[]>>;
-}
-
-export default (props: IProps): JSX.Element => {
+export default (props: IGloableProps): JSX.Element => {
   const [transXY, handleMouseDown, reset] = useMove();
   const [scale] = useKeyPress(reset);
   const { domList, setDomList } = props;
@@ -43,6 +39,10 @@ export default (props: IProps): JSX.Element => {
     ]);
   };
 
+  const handleClick = (key: string) => {
+    const data = [...domList];
+  };
+
   return (
     <div className={styles.pages}>
       <article
@@ -63,7 +63,7 @@ export default (props: IProps): JSX.Element => {
           onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
-          {RenderDomConfigToReactDom(domList)}
+          {RenderDomConfigToReactDom(domList, handleClick)}
         </div>
         {/* 牛逼！！ */}
       </article>

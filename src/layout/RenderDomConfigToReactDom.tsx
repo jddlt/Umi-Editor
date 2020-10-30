@@ -1,11 +1,22 @@
 import React, { useCallback } from 'react';
 import { IDomItem } from '@/Components/BaseComp/index.d';
 
-export const RenderDomConfigToReactDom = (props: IDomItem<any>[]) => {
+export const RenderDomConfigToReactDom = (
+  props: IDomItem<any>[],
+  handleClick: (e: string) => void,
+) => {
   const loopDom = useCallback(
     (props: IDomItem<any>[]) => {
       return props.map(({ Comp, Props, Style, key, children }) => (
-        <Comp props={Props} key={key} style={Style}>
+        <Comp
+          key={key}
+          props={Props}
+          style={Style}
+          onClick={e => {
+            e.stopPropagation();
+            handleClick && handleClick(key);
+          }}
+        >
           {Array.isArray(children) && children.length ? (
             loopDom(children)
           ) : (

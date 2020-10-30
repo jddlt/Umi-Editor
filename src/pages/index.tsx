@@ -2,17 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import BaseCmp from '@/Components/BaseComp';
 import PropsSetting from '@/Components/PropsSetting';
-import { IDomItem } from '@/Components/BaseComp/index.d';
-import { useImmer } from 'use-immer';
+import { IDomItem, IGloableProps } from '@/Components/BaseComp/index.d';
 import Pages from '@/Components/Pages';
 import styles from './index.less';
 
 export default () => {
   const [domList, setDomList] = useState<IDomItem<any>[]>([]);
+  const [currentKey, setCurrentKey] = useState<string>('');
   useEffect(() => {
     document.body.style.margin = '0';
   }, []);
-  // createContext
+  // 全局属性
+  const GloableData: IGloableProps = {
+    domList,
+    setDomList,
+    currentKey,
+    setCurrentKey,
+  };
   return (
     <div className={styles.main}>
       <header className={styles.header}>
@@ -27,9 +33,9 @@ export default () => {
         </div>
       </header>
       <div className={styles.container}>
-        <BaseCmp domList={domList} setDomList={setDomList} />
-        <Pages domList={domList} setDomList={setDomList} />
-        <PropsSetting />
+        <BaseCmp {...GloableData} />
+        <Pages {...GloableData} />
+        <PropsSetting {...GloableData} />
       </div>
     </div>
   );

@@ -70,10 +70,13 @@ const ButtonConfig: IFormItemConfig[] = [
 
 // 渲染Button
 export const TxpButton = (props: IPropsWithChild<ButtonProps> = {}) => {
-  console.log('button', props);
-
   return (
-    <Button {...props?.props} style={props?.style} type="primary">
+    <Button
+      {...props?.props}
+      onClick={props.onClick}
+      style={props?.style}
+      type="primary"
+    >
       {props.children || props.props?.children}
     </Button>
   );

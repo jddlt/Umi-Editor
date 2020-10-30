@@ -43,7 +43,7 @@ const CardConfig: IFormItemConfig[] = [
 // 渲染Button
 export const TxpCard = (props: IPropsWithChild<CardProps> = {}) => {
   return (
-    <Card {...props?.props} style={props?.style}>
+    <Card {...props?.props} onClick={props.onClick} style={props?.style}>
       {props?.children || props.props?.children}
     </Card>
   );

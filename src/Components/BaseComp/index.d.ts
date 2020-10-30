@@ -1,13 +1,16 @@
-import React, { CSSProperties, ReactNode, ReactElement } from 'react';
-import { DataNode } from 'antd/lib/tree';
+import React, {
+  CSSProperties,
+  ReactNode,
+  ReactElement,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 
-export type IComp = (props: IProps | IPropsWithChild) => React.ReactElement;
-
-export interface ITxpComp {
-  Name: string;
-  Comp: IComp;
-  Config: Record<keyof any, any>;
-  Container?: boolean;
+export interface IGloableProps {
+  domList: IDomItem<any>[];
+  setDomList: Dispatch<SetStateAction<IDomItem<any>[]>>;
+  currentKey: string;
+  setCurrentKey?: Dispatch<SetStateAction<string>>;
 }
 
 export interface IAntdComp<T> {
@@ -23,6 +26,7 @@ export interface IAntdComp<T> {
 export interface IProps<T> {
   props?: T;
   style?: CSSProperties;
+  onClick?: (e: React.MouseEvent) => void;
 }
 export interface IPropsWithChild<T> extends IProps<T> {
   children?: ReactNode;
@@ -38,12 +42,6 @@ export interface IPreviewProps {
   onDragStart: (e: React.DragEvent, name: string) => void;
 }
 
-export interface ITransData extends DataNode {
-  comp: IComp;
-  children: ITransData[];
-  container?: boolean;
-  name: string;
-}
 export interface ILabelinValue {
   label: string;
   value: string | undefined;

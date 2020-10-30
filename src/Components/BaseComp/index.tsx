@@ -1,23 +1,13 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-  ReactElement,
-} from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Tabs, Tree, message } from 'antd';
-import { IDomItem } from '@/Components/BaseComp/index.d';
+import { IDomItem, IGloableProps } from '@/Components/BaseComp/index.d';
 import styles from './index.less';
+import { findCompByKey } from '@/utils/index';
 import AntdComp from '@/Components/Antd';
 
 const { TabPane } = Tabs;
 
-interface IProps {
-  domList: IDomItem<any>[];
-  setDomList: Dispatch<SetStateAction<IDomItem<any>[]>>;
-}
-
-export default (props: IProps) => {
+export default (props: IGloableProps) => {
   const { domList, setDomList } = props;
   function handleDragStart(e: React.DragEvent, name: string) {
     e.dataTransfer.dropEffect = 'move';
@@ -36,34 +26,15 @@ export default (props: IProps) => {
     if (!isContainer && dropPosition === 0)
       return message.error('无法放入非容器组件中');
 
-    const loop = (
-      data: IDomItem<any>[],
-      key: string,
-      callback: (
-        item: IDomItem<any>,
-        index: number,
-        arr: IDomItem<any>[],
-      ) => void,
-    ) => {
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].key === key) {
-          return callback(data[i], i, data);
-        }
-        if (data[i].children) {
-          loop(data[i].children || [], key, callback);
-        }
-      }
-    };
-
     let data: any = [...domList];
     let dragObj: IDomItem<any> = {} as IDomItem<any>;
-    loop(data, dragKey, (item, index, arr) => {
+    findCompByKey(data, dragKey, (item, index, arr) => {
       arr.splice(index, 1);
       dragObj = item;
     });
 
     if (!info.dropToGap) {
-      loop(data, dropKey, item => {
+      findCompByKey(data, dropKey, item => {
         try {
           item.children = item.children || [];
           item.children.push(dragObj);
@@ -76,14 +47,14 @@ export default (props: IProps) => {
       info.node.props.expanded &&
       dropPosition === 1
     ) {
-      loop(data, dropKey, item => {
+      findCompByKey(data, dropKey, item => {
         item.children = item.children || [];
         item.children.unshift(dragObj);
       });
     } else {
       let ar: IDomItem<any>[] = [];
       let i: number = 0;
-      loop(data, dropKey, (_, index, arr) => {
+      findCompByKey(data, dropKey, (_, index, arr) => {
         ar = arr;
         i = index;
       });
@@ -93,7 +64,6 @@ export default (props: IProps) => {
         ar.splice(i + 1, 0, dragObj);
       }
     }
-    console.log('data111', data);
     setDomList(data);
   };
 

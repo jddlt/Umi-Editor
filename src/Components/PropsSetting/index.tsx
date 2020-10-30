@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Dispatch, SetStateAction } from 'react';
 import { Tabs, Form, Button } from 'antd';
-import { AppleOutlined, AndroidOutlined } from '@ant-design/icons';
 import styles from './index.less';
+import { IGloableProps } from '@/Components/BaseComp/index.d';
 import TxpButton from '@/Components/Antd/Button';
 import { renderFormItem as RenderFormItem } from '@/layout/renderFormItem';
 const { TabPane } = Tabs;
 
-export default () => {
+export default (props: IGloableProps): JSX.Element => {
   const [form] = Form.useForm();
 
   const handleSaveButtonProps = () => {
