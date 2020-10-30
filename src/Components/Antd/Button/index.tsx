@@ -2,7 +2,7 @@ import React, { CSSProperties } from 'react';
 import { Button, Card } from 'antd';
 import {
   IFormItemConfig,
-  IProps,
+  IPropsWithChild,
   IPreviewProps,
   IAntdComp,
 } from '@/Components/BaseComp/index.d';
@@ -17,62 +17,64 @@ const gridStyle: CSSProperties = {
 const ButtonConfig: IFormItemConfig[] = [
   {
     title: '内容',
-    key: 'children',
+    dataIndex: 'children',
     type: 'Input',
     placeholder: '输入按钮内容',
   },
   {
     title: '类型',
-    key: 'type',
+    dataIndex: 'type',
     type: 'Select',
     placeholder: '选择按钮类型',
     options: ['default', 'primary', 'ghost', 'dashed', 'link', 'text'],
   },
   {
     title: '危险按钮',
-    key: 'danger',
+    dataIndex: 'danger',
     type: 'Switch',
   },
   {
     title: '图标',
-    key: 'icon',
+    dataIndex: 'icon',
     type: 'Input',
     placeholder: '请输入icon图标',
   },
   {
     title: '按钮形状',
-    key: 'shape',
+    dataIndex: 'shape',
     type: 'Radio',
     options: ['default', 'circle', 'round'],
   },
   {
     title: '按钮尺寸',
-    key: 'size',
+    dataIndex: 'size',
     type: 'Radio',
     options: ['middle', 'small', 'large'],
   },
   {
     title: '正在加载',
-    key: 'loading',
+    dataIndex: 'loading',
     type: 'Switch',
   },
   {
     title: '幽灵按钮',
-    key: 'ghost',
+    dataIndex: 'ghost',
     type: 'Switch',
   },
   {
     title: '撑满宽度',
-    key: 'block',
+    dataIndex: 'block',
     type: 'Switch',
   },
 ];
 
 // 渲染Button
-export const TxpButton = (props: IProps<ButtonProps> = {}) => {
+export const TxpButton = (props: IPropsWithChild<ButtonProps> = {}) => {
+  console.log('button', props);
+
   return (
     <Button {...props?.props} style={props?.style} type="primary">
-      {props.props?.children}
+      {props.children || props.props?.children}
     </Button>
   );
 };
@@ -83,6 +85,7 @@ export const PreviewButton = (props: IPreviewProps): JSX.Element => {
     <Card title={<strong>Button</strong>} size="small">
       <Card.Grid
         style={gridStyle}
+        // @ts-ignore
         draggable
         onDragStart={(e: React.DragEvent) => {
           props.onDragStart(e, 'Button');
@@ -104,7 +107,7 @@ const TxpButtonProps: ButtonProps = {
 const ButtonStyle = {};
 
 export default {
-  name: 'Button',
+  Name: 'Button',
   Config: ButtonConfig,
   Comp: TxpButton,
   Preview: PreviewButton,

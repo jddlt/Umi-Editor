@@ -2,7 +2,7 @@ import React, { CSSProperties, useMemo } from 'react';
 import { Card } from 'antd';
 import {
   IFormItemConfig,
-  IProps,
+  IPropsWithChild,
   IPreviewProps,
   IAntdComp,
 } from '@/Components/BaseComp/index.d';
@@ -17,34 +17,34 @@ const gridStyle: CSSProperties = {
 const CardConfig: IFormItemConfig[] = [
   {
     title: '卡片标题',
-    key: 'title',
+    dataIndex: 'title',
     type: 'Input',
     placeholder: '输入卡片标题',
   },
   {
     title: '有无边框',
-    key: 'bordered',
+    dataIndex: 'bordered',
     type: 'Switch',
   },
   {
     title: '右上角内容',
-    key: 'extra',
+    dataIndex: 'extra',
     type: 'Input',
     placeholder: '输入ReactNode',
   },
   {
     title: '卡片大小',
-    key: 'size',
+    dataIndex: 'size',
     type: 'Radio',
     options: ['middle', 'small'],
   },
 ];
 
 // 渲染Button
-export const TxpCard = (props: IProps<CardProps> = {}) => {
+export const TxpCard = (props: IPropsWithChild<CardProps> = {}) => {
   return (
     <Card {...props?.props} style={props?.style}>
-      {props.props?.children}
+      {props?.children || props.props?.children}
     </Card>
   );
 };
@@ -55,6 +55,7 @@ export const PreviewCard = (props: IPreviewProps): JSX.Element => {
     <Card title={<strong>Card</strong>} size="small">
       <Card.Grid
         style={gridStyle as CSSProperties}
+        // @ts-ignore
         draggable
         onDragStart={(e: React.DragEvent) => {
           props.onDragStart(e, 'Card');
@@ -77,15 +78,16 @@ export const PreviewCard = (props: IPreviewProps): JSX.Element => {
 };
 
 const TxpCardProps: CardProps = {
-  title: '<strong>Card</strong>',
+  title: 'Card',
   bordered: true,
   size: 'default',
+  children: '卡片',
 };
 
 const CardStyle = {};
 
 export default {
-  name: 'Card',
+  Name: 'Card',
   Config: CardConfig,
   Comp: TxpCard,
   Preview: PreviewCard,

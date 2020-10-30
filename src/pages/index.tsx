@@ -1,19 +1,14 @@
-import React, {
-  useEffect,
-  ReactNode,
-  createContext,
-  createFactory,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import BaseCmp from '@/Components/BaseComp';
 import PropsSetting from '@/Components/PropsSetting';
-import { IDomList } from '@/Components/BaseComp/index.d';
+import { IDomItem } from '@/Components/BaseComp/index.d';
 import { useImmer } from 'use-immer';
 import Pages from '@/Components/Pages';
 import styles from './index.less';
 
 export default () => {
-  const [domList, setDomList] = useImmer<IDomList[]>([]);
+  const [domList, setDomList] = useState<IDomItem<any>[]>([]);
   useEffect(() => {
     document.body.style.margin = '0';
   }, []);

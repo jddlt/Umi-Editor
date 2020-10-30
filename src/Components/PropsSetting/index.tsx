@@ -3,7 +3,7 @@ import { Tabs, Form, Button } from 'antd';
 import { AppleOutlined, AndroidOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import TxpButton from '@/Components/Antd/Button';
-import { renderFormItem } from '@/layout/renderFormItem';
+import { renderFormItem as RenderFormItem } from '@/layout/renderFormItem';
 const { TabPane } = Tabs;
 
 export default () => {
@@ -24,7 +24,9 @@ export default () => {
         <TabPane tab={<span>属性配置</span>} key="props">
           <div className={styles.tabContainer}>
             <Form form={form}>
-              {TxpButton.Config.map(item => renderFormItem(item))}
+              {TxpButton.Config.map(item => (
+                <RenderFormItem key={item.dataIndex} {...item} />
+              ))}
             </Form>
           </div>
           <Button

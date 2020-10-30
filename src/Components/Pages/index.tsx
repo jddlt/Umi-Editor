@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import classnames from 'classnames';
 import useMove from '@/hooks/useMove';
 import useKeyPress from '@/hooks/useKeyPress';
-import { Draft } from 'immer';
 import { message } from 'antd';
-import { IDomList } from '@/Components/BaseComp/index.d';
+import { IDomItem, IAntdComp } from '@/Components/BaseComp/index.d';
+import { RenderDomConfigToReactDom } from '@/layout/RenderDomConfigToReactDom';
 import styles from './index.less';
 import AntdComp from '@/Components/Antd';
 
 interface IProps {
-  domList: IDomList[];
-  setDomList: (f: (draft: Draft<IDomList[]>) => void | IDomList[]) => void;
+  domList: IDomItem<any>[];
+  setDomList: Dispatch<SetStateAction<IDomItem<any>[]>>;
 }
 
 export default (props: IProps): JSX.Element => {
@@ -28,36 +28,19 @@ export default (props: IProps): JSX.Element => {
   const handleDrop = function(e: React.DragEvent) {
     e.preventDefault();
     const name = e.dataTransfer.getData('name');
-    const comp = AntdComp[name];
-    const Dom = comp.Comp;
-    console.log('Dom', <Dom />);
+    const CompInfo = AntdComp[name]; // 找到组件
+    const Comp = CompInfo.Comp; // 渲染Dom
+    if (!Comp) return message.error(`未找到 ${name} 组件`);
 
-    if (!Dom) return message.error(`未找到 ${name} 组件`);
-    // const container = e.currentTarget;
-    // console.log(name, container);
-    setDomList(r => {
-      r.push({
-        key: `${item.Name}_${index}`,
-        name: item.Name,
-        title: (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <span style={{ fontSize: '15px' }}>{item.Name}</span>
-            {item.Container && (
-              <span style={{ color: 'skyblue', fontSize: '12px' }}>容</span>
-            )}
-          </div>
-        ),
-        container: item.Container,
-        children: item.children || [],
-        comp: item.Comp,
-      });
-    });
+    setDomList(r => [
+      ...r,
+      {
+        ...CompInfo,
+        key: `${CompInfo.Name}_${Date.now()}`,
+        title: Title(CompInfo),
+        children: [],
+      },
+    ]);
   };
 
   return (
@@ -80,7 +63,7 @@ export default (props: IProps): JSX.Element => {
           onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
-          {domList.map((item, index) => item.Comp({}))}
+          {RenderDomConfigToReactDom(domList)}
         </div>
         {/* 牛逼！！ */}
       </article>
@@ -89,6 +72,23 @@ export default (props: IProps): JSX.Element => {
         {Math.floor(scale * 100)}% &nbsp;|&nbsp; 偏移量：
         {transXY.x}px {transXY.y}px
       </footer>
+    </div>
+  );
+};
+
+const Title = (props: IAntdComp<any>) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <span style={{ fontSize: '15px' }}>{props.Name}</span>
+      {props.Container && (
+        <span style={{ color: 'skyblue', fontSize: '12px' }}>容</span>
+      )}
     </div>
   );
 };

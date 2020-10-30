@@ -11,11 +11,11 @@ export interface ITxpComp {
 }
 
 export interface IAntdComp<T> {
-  name: string;
+  Name: string;
   Config: IFormItemConfig[];
-  Comp: (props: IProps<T>) => ReactElement;
+  Comp: (props: IPropsWithChild<T>) => ReactElement;
   Preview: (props: IPreviewProps) => ReactElement;
-  Props: IProps<T>;
+  Props: T;
   Style: {};
   Container: boolean;
 }
@@ -28,11 +28,10 @@ export interface IPropsWithChild<T> extends IProps<T> {
   children?: ReactNode;
 }
 
-export interface IDomList {
-  Name: string;
-  Comp: IComp;
-  Container?: boolean;
-  children?: ITransData[];
+export interface IDomItem<T> extends IAntdComp<T> {
+  title: ReactNode;
+  key: string;
+  children?: IDomItem<T>[];
 }
 export interface IPreviewProps {
   children?: React.ReactNode;
@@ -52,7 +51,7 @@ export interface ILabelinValue {
 
 export interface IFormItemConfig {
   title: string;
-  key: string;
+  dataIndex: string;
   type: 'Input' | 'Switch' | 'Select' | 'Radio';
   defaultValue?: string | boolean;
   options?: string[];

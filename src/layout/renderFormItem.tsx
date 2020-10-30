@@ -5,7 +5,8 @@ import { IFormItemConfig, ILabelinValue } from '@/Components/BaseComp/index.d';
 export const renderFormItem = (props: IFormItemConfig) => {
   return (
     <Form.Item
-      name={props.key}
+      key={props.dataIndex}
+      name={props.dataIndex}
       label={<span>{props.title}</span>}
       valuePropName={props.type === 'Switch' ? 'checked' : 'value'}
       rules={[

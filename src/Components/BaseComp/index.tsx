@@ -1,71 +1,34 @@
-import React, { useEffect, useState, ReactElement } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+  ReactElement,
+} from 'react';
 import { Tabs, Tree, message } from 'antd';
-import cloneDeep from 'lodash/cloneDeep';
-import { IDomList, ITransData } from '@/Components/BaseComp/index.d';
-import { Draft } from 'immer';
+import { IDomItem } from '@/Components/BaseComp/index.d';
 import styles from './index.less';
 import AntdComp from '@/Components/Antd';
 
 const { TabPane } = Tabs;
 
 interface IProps {
-  domList: IDomList[];
-  setDomList: (f: (draft: Draft<IDomList[]>) => void | IDomList[]) => void;
+  domList: IDomItem<any>[];
+  setDomList: Dispatch<SetStateAction<IDomItem<any>[]>>;
 }
 
 export default (props: IProps) => {
   const { domList, setDomList } = props;
-  const [transData, setTransData] = useState<ITransData[]>([]);
   function handleDragStart(e: React.DragEvent, name: string) {
     e.dataTransfer.dropEffect = 'move';
     e.dataTransfer.setData('name', name);
   }
 
-  useEffect(() => {
-    const data = domList.map((item, index) => ({
-      key: `${item.Name}_${index}`,
-      name: item.Name,
-      title: (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <span style={{ fontSize: '15px' }}>{item.Name}</span>
-          {item.Container && (
-            <span style={{ color: 'skyblue', fontSize: '12px' }}>容</span>
-          )}
-        </div>
-      ),
-      container: item.Container,
-      children: item.children || [],
-      comp: item.Comp,
-    }));
-    setTransData([...data]);
-  }, [domList]);
-
-  const mapComp = (data: ITransData[]): IDomList[] => {
-    console.log('data', data);
-
-    return data.map(item => ({
-      Name: item.name,
-      Container: item.container,
-      children: item.children,
-      Comp: () => (
-        <item.comp key={item.key}>
-          {item.children && mapComp(item.children)}
-        </item.comp>
-      ),
-    }));
-  };
-
   const onDrop = (info: any) => {
     console.log(info);
     const dropKey = info.node.props.eventKey; // 掉落的目标
     const dragKey = info.dragNode.props.eventKey; // 拖拽的目标
-    const isContainer = info.node.container; // 掉落的目标是否是容器
+    const isContainer = info.node.Container; // 掉落的目标是否是容器
     const dropPos = info.node.props.pos.split('-'); // 啥玩意
     const dropPosition =
       info.dropPosition - Number(dropPos[dropPos.length - 1]); // 掉落的目标的位置 1:上  2:下  0:内
@@ -74,9 +37,13 @@ export default (props: IProps) => {
       return message.error('无法放入非容器组件中');
 
     const loop = (
-      data: ITransData[],
+      data: IDomItem<any>[],
       key: string,
-      callback: (item: ITransData, index: number, arr: ITransData[]) => void,
+      callback: (
+        item: IDomItem<any>,
+        index: number,
+        arr: IDomItem<any>[],
+      ) => void,
     ) => {
       for (let i = 0; i < data.length; i++) {
         if (data[i].key === key) {
@@ -88,8 +55,8 @@ export default (props: IProps) => {
       }
     };
 
-    const data = cloneDeep(transData);
-    let dragObj: ITransData = {} as ITransData;
+    let data: any = [...domList];
+    let dragObj: IDomItem<any> = {} as IDomItem<any>;
     loop(data, dragKey, (item, index, arr) => {
       arr.splice(index, 1);
       dragObj = item;
@@ -114,7 +81,7 @@ export default (props: IProps) => {
         item.children.unshift(dragObj);
       });
     } else {
-      let ar: ITransData[] = [];
+      let ar: IDomItem<any>[] = [];
       let i: number = 0;
       loop(data, dropKey, (_, index, arr) => {
         ar = arr;
@@ -127,9 +94,7 @@ export default (props: IProps) => {
       }
     }
     console.log('data111', data);
-    setTransData([...data]);
-    // const DomData = mapComp([...data]);
-    // setDomList(() => DomData);
+    setDomList(data);
   };
 
   return (
@@ -142,12 +107,12 @@ export default (props: IProps) => {
         <TabPane tab="基础组件" key="Comp">
           <div className={styles.tabContainer}>
             {Object.entries(AntdComp).map(([_, Item]) => (
-              <Item.Preview onDragStart={handleDragStart} />
+              <Item.Preview key={Item.Name} onDragStart={handleDragStart} />
             ))}
           </div>
         </TabPane>
         <TabPane tab="页面结构" key="tree">
-          {transData.length > 0 ? (
+          {domList.length > 0 ? (
             <Tree
               className="draggable-tree"
               draggable
@@ -155,7 +120,7 @@ export default (props: IProps) => {
               key="key"
               onDragEnter={() => {}}
               onDrop={onDrop}
-              treeData={transData}
+              treeData={domList}
             />
           ) : (
             <div style={{ textAlign: 'center', letterSpacing: '1px' }}>
