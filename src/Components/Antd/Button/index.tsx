@@ -11,6 +11,7 @@ import { ButtonProps } from 'antd/lib/button';
 const gridStyle: CSSProperties = {
   width: '100%',
   textAlign: 'center',
+  cursor: 'move',
 };
 
 // Button属性

@@ -17,7 +17,11 @@ export const RenderDomConfigToReactDom = (
       return props.map(({ Comp, Props, Style, key, children }) => (
         <Comp
           key={key}
-          props={Props}
+          props={{
+            ...Props,
+            ...transStaticChildren((children || []).filter(item => !item.Comp)),
+          }}
+          // {}
           style={{
             ...Style,
             outline:
@@ -29,11 +33,12 @@ export const RenderDomConfigToReactDom = (
             handleClick && handleClick(key);
           }}
         >
-          {Array.isArray(children) && children.length ? (
-            loopDom(children)
+          {Array.isArray(children) &&
+          children.filter(item => item.Comp)?.length ? (
+            loopDom(children.filter(item => item.Comp))
           ) : (
             <span
-              dangerouslySetInnerHTML={{ __html: Props.children || '' }}
+              dangerouslySetInnerHTML={{ __html: Props?.children || '' }}
             ></span>
           )}
         </Comp>
@@ -41,5 +46,14 @@ export const RenderDomConfigToReactDom = (
     },
     [props],
   );
-  return loopDom(props);
+  const transStaticChildren = (Children: any) => {
+    const props: any = {};
+    Children.forEach((item: any) => {
+      props[item.title] = item.children?.length ? loopDom(item.children) : null;
+    });
+    return props;
+  };
+  const Dom = loopDom(props);
+  console.log('Dom', Dom);
+  return Dom;
 };

@@ -34,7 +34,7 @@ export default (props: IGloableProps): JSX.Element => {
         ...CompInfo,
         key: `${CompInfo.Name}_${Date.now()}`,
         title: Title(CompInfo),
-        children: [],
+        children: CompInfo.Children || [],
       },
     ]);
   };
@@ -67,7 +67,6 @@ export default (props: IGloableProps): JSX.Element => {
         >
           {RenderDomConfigToReactDom(domList, handleClick)}
         </div>
-        {/* 牛逼！！ */}
       </article>
       <footer className={styles.tips}>
         Cmd+Up/Down: 缩放 &nbsp;|&nbsp; Ctrl+R: 重置 &nbsp;|&nbsp; 当前缩放:{' '}

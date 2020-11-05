@@ -4,6 +4,12 @@ import { IDomItem, IGloableProps } from '@/Components/BaseComp/index.d';
 import styles from './index.less';
 import { findCompByKey } from '@/utils/index';
 import AntdComp from '@/Components/Antd';
+import {
+  SortableContainer,
+  SortableElement,
+  SortEnd,
+  SortEvent,
+} from 'react-sortable-hoc';
 
 const { TabPane } = Tabs;
 
@@ -67,6 +73,23 @@ export default (props: IGloableProps) => {
     setDomList(data);
   };
 
+  const SortableCompContainer = SortableContainer(() => (
+    <div className={styles.realContainer}>
+      <div className={styles.tabContainer}>
+        {Object.entries(AntdComp).map(([_, Item]) => (
+          <SortableComp
+            handleDragStart={handleDragStart}
+            Preview={Item.Preview}
+          />
+        ))}
+      </div>
+    </div>
+  ));
+
+  const SortableComp = SortableElement(({ handleDragStart, Preview }: any) => (
+    <Preview onDragStart={handleDragStart} />
+  ));
+
   return (
     <div className={styles['baseCmpContainer']}>
       <Tabs
@@ -80,6 +103,7 @@ export default (props: IGloableProps) => {
               <Item.Preview key={Item.Name} onDragStart={handleDragStart} />
             ))}
           </div>
+          {/* <SortableCompContainer helperClass={styles.helper} /> */}
         </TabPane>
         <TabPane tab="页面结构" key="tree">
           {domList.length > 0 ? (
@@ -90,7 +114,11 @@ export default (props: IGloableProps) => {
               key="key"
               onDragEnter={() => {}}
               onDrop={onDrop}
-              onClick={(_, b) => setCurrent({ ...b })}
+              onClick={(_, b) => {
+                console.log(b);
+                // @ts-ignore
+                if (b.Comp) setCurrent({ ...b });
+              }}
               treeData={domList}
             />
           ) : (

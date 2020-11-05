@@ -11,6 +11,7 @@ import { FormProps } from 'antd/lib/form';
 const gridStyle: CSSProperties = {
   width: '100%',
   textAlign: 'center',
+  cursor: 'move',
 };
 
 // 偷懒行为

@@ -21,6 +21,7 @@ export interface IAntdComp<T> {
   Props: T;
   Style: {};
   Container: boolean;
+  Children?: any[];
 }
 
 export interface IProps<T> {

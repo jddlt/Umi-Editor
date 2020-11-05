@@ -1,5 +1,5 @@
 @import './../../pages/index.less';
-.baseCmpContainer{
+.baseCmpContainer {
   width: 280px;
   height: 100%;
   overflow: hidden;
@@ -9,7 +9,7 @@
   position: relative;
   z-index: 2;
 }
-.tabContainer{
+.tabContainer {
   width: 100%;
   position: relative;
   height: calc(100vh - @Header_Height - 46px);
@@ -17,11 +17,16 @@
   padding: 10px 6px;
   box-sizing: border-box;
 }
-.flexc{
+.flexc {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.tabContainer>*{
+.tabContainer > * {
   margin-bottom: 12px !important;
+}
+.helper {
+  z-index: 3;
+  transition-delay: 0;
+  transition-duration: 0.15s;
 }

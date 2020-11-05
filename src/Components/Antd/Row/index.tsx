@@ -11,6 +11,7 @@ import { RowProps } from 'antd/lib/row';
 const gridStyle: CSSProperties = {
   width: '100%',
   textAlign: 'center',
+  cursor: 'move',
 };
 
 // 属性

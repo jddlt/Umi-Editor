@@ -11,6 +11,7 @@ import { ColProps } from 'antd/lib/col';
 const gridStyle: CSSProperties = {
   width: '100%',
   textAlign: 'center',
+  cursor: 'move',
 };
 
 // 偷懒行为

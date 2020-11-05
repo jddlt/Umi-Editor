@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import { Card, Input, Form } from 'antd';
+import { Card, Form } from 'antd';
 import {
   IFormItemConfig,
   IPropsWithChild,
@@ -11,6 +11,7 @@ import { FormItemProps } from 'antd/lib/form';
 const gridStyle: CSSProperties = {
   width: '100%',
   textAlign: 'center',
+  cursor: 'move',
 };
 
 // 偷懒行为
@@ -62,6 +63,18 @@ const TxpConfig: IFormItemConfig[] = [
     dataIndex: 'required',
     type: 'Switch',
   },
+  {
+    title: '文本占比',
+    dataIndex: 'labelCol',
+    type: 'Input',
+    placeholder: '请填写文本占比',
+  },
+  {
+    title: '表单占比',
+    dataIndex: 'wrapperCol',
+    type: 'Input',
+    placeholder: '请填写表单占比',
+  },
 ];
 
 const TxpProps: CompProps = {
@@ -70,12 +83,21 @@ const TxpProps: CompProps = {
   labelAlign: 'left',
   noStyle: false,
   required: false,
+  labelCol: 6 as any,
+  wrapperCol: 18 as any,
 };
 
 // 渲染Dom
 export const TxpComp = (props: IPropsWithChild<CompProps> = {}) => {
   return (
-    <Form.Item onClick={props.onClick} {...props?.props} style={props?.style}>
+    <Form.Item
+      // @ts-ignore
+      onClick={props.onClick}
+      labelCol={{ span: Number(props?.props?.labelCol) as number }}
+      wrapperCol={{ span: Number(props?.props?.wrapperCol) as number }}
+      {...props?.props}
+      style={props?.style}
+    >
       {props?.children || props.props?.children}
     </Form.Item>
   );
@@ -94,12 +116,7 @@ export const PreviewComp = (props: IPreviewProps): JSX.Element => {
         }}
       >
         <Form.Item label="姓名" style={{ marginBottom: '0' }}>
-          <Input
-            style={{ width: '150px', textAlign: 'center' }}
-            size="small"
-            value="yaHaHa!"
-            readOnly
-          />
+          <></>
         </Form.Item>
       </Card.Grid>
     </Card>

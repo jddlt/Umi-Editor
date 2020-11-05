@@ -6,8 +6,12 @@ import {
   IPreviewProps,
   IAntdComp,
 } from '@/Components/BaseComp/index.d';
-import { SwitchProps } from 'antd/lib/switch';
 
+interface TextProps {
+  children: string;
+  fontSize: string;
+  color: string;
+}
 const gridStyle: CSSProperties = {
   width: '100%',
   textAlign: 'center',
@@ -15,60 +19,57 @@ const gridStyle: CSSProperties = {
 };
 
 // 偷懒行为
-interface CompProps extends SwitchProps {}
+interface CompProps extends TextProps {}
+
+const CompName = 'Text';
 
 // 属性
 const TxpConfig: IFormItemConfig[] = [
   {
-    title: '选中',
-    dataIndex: 'checked',
-    type: 'Switch',
+    title: '内容',
+    dataIndex: 'children',
+    type: 'Input',
   },
   {
-    title: '初始选中',
-    dataIndex: 'defaultChecked',
-    type: 'Switch',
+    title: '字体大小',
+    dataIndex: 'fontSize',
+    type: 'Input',
   },
   {
-    title: '禁用',
-    dataIndex: 'disabled',
-    type: 'Switch',
-  },
-  {
-    title: '加载中',
-    dataIndex: 'loading',
-    type: 'Switch',
-  },
-  {
-    title: '开关大小',
-    dataIndex: 'size',
-    type: 'Radio',
-    options: ['default', 'small'],
+    title: '颜色',
+    dataIndex: 'color',
+    type: 'Input',
   },
 ];
 
-const TxpProps: CompProps = {
-  size: 'default',
+const TxpProps: Partial<CompProps> = {
+  fontSize: '15px',
+  color: '#333',
+  children: '我是文本',
 };
 
 // 渲染Dom
 export const TxpComp = (props: IPropsWithChild<CompProps> = {}) => {
-  return <Switch {...props?.props} style={props?.style} />;
+  return (
+    <span style={props?.props} onClick={props?.onClick}>
+      {props?.props?.children}
+    </span>
+  );
 };
 
 // 左侧预览Dom
 export const PreviewComp = (props: IPreviewProps): JSX.Element => {
   return (
-    <Card title={<strong>Switch</strong>} size="small">
+    <Card title={<strong>{CompName}</strong>} size="small">
       <Card.Grid
         style={gridStyle as CSSProperties}
         // @ts-ignore
         draggable
         onDragStart={(e: React.DragEvent) => {
-          props.onDragStart(e, 'Switch');
+          props.onDragStart(e, CompName);
         }}
       >
-        <Switch defaultChecked />
+        <span>文本</span>
       </Card.Grid>
     </Card>
   );
@@ -79,7 +80,7 @@ const OwnChildren: Txp.StaticChildren[] = [];
 const TxpStyle = {};
 
 export default {
-  Name: 'Switch',
+  Name: CompName,
   Config: TxpConfig,
   Comp: TxpComp,
   Preview: PreviewComp,
