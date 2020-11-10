@@ -1,11 +1,5 @@
 import React, { CSSProperties } from 'react';
 import { Card, Switch } from 'antd';
-import {
-  IFormItemConfig,
-  IPropsWithChild,
-  IPreviewProps,
-  IAntdComp,
-} from '@/Components/BaseComp/index.d';
 import { SwitchProps } from 'antd/lib/switch';
 
 const gridStyle: CSSProperties = {
@@ -14,11 +8,16 @@ const gridStyle: CSSProperties = {
   cursor: 'move',
 };
 
+const outStyle: CSSProperties = {
+  width: '100%',
+  display: 'inline-block',
+};
+
 // 偷懒行为
 interface CompProps extends SwitchProps {}
 
 // 属性
-const TxpConfig: IFormItemConfig[] = [
+const TxpConfig: Txp.IFormItemConfig[] = [
   {
     title: '选中',
     dataIndex: 'checked',
@@ -52,12 +51,20 @@ const TxpProps: CompProps = {
 };
 
 // 渲染Dom
-export const TxpComp = (props: IPropsWithChild<CompProps> = {}) => {
-  return <Switch {...props?.props} style={props?.style} />;
+export const TxpComp = (props: Txp.IPropsWithChild<CompProps> = {}) => {
+  return (
+    <span
+      className="TxpSwitch"
+      onClick={props?.onClick}
+      style={{ fontSize: 0 }}
+    >
+      <Switch {...props?.props} style={props?.style} />
+    </span>
+  );
 };
 
 // 左侧预览Dom
-export const PreviewComp = (props: IPreviewProps): JSX.Element => {
+export const PreviewComp = (props: Txp.IPreviewProps): JSX.Element => {
   return (
     <Card title={<strong>Switch</strong>} size="small">
       <Card.Grid
@@ -74,7 +81,7 @@ export const PreviewComp = (props: IPreviewProps): JSX.Element => {
   );
 };
 
-const OwnChildren: Txp.StaticChildren[] = [];
+const OwnChildren: Txp.IChild[] = [];
 
 const TxpStyle = {};
 
@@ -87,4 +94,4 @@ export default {
   Style: TxpStyle,
   Container: false,
   Children: OwnChildren,
-} as IAntdComp<CompProps>;
+} as Txp.IAntdComp<CompProps>;

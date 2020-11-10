@@ -25,6 +25,7 @@
     "@ant-design/pro-layout": "^6.5.8",
     "@types/classnames": "^2.2.10",
     "@types/react-hammerjs": "^1.0.1",
+    "@types/styled-components": "^5.1.4",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.24",
     "classnames": "^2.2.6",
@@ -34,6 +35,7 @@
     "react-dom": "^16.12.0",
     "react-hammerjs": "^1.0.1",
     "react-sortable-hoc": "^1.11.0",
+    "styled-components": "^5.2.1",
     "umi": "^3.2.24",
     "use-immer": "^0.4.1",
     "yorkie": "^2.0.0"

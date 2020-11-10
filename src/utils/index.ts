@@ -1,10 +1,8 @@
-import { IDomItem } from '@/Components/BaseComp/index.d';
-
 // 通过Key找到组件
 export const findCompByKey = (
-  data: IDomItem<any>[],
+  data: Txp.IChild[],
   key: string,
-  callback: (item: IDomItem<any>, index: number, arr: IDomItem<any>[]) => void,
+  callback: (item: Txp.IChild, index: number, arr: Txp.IChild[]) => void,
 ) => {
   for (let i = 0; i < data.length; i++) {
     if (data[i].key === key) {

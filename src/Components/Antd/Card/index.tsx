@@ -1,17 +1,5 @@
-import React, {
-  CSSProperties,
-  useMemo,
-  ReactChildren,
-  ReactElement,
-  ReactNode,
-} from 'react';
+import React, { CSSProperties } from 'react';
 import { Card } from 'antd';
-import {
-  IFormItemConfig,
-  IPropsWithChild,
-  IPreviewProps,
-  IAntdComp,
-} from '@/Components/BaseComp/index.d';
 import { CardProps } from 'antd/lib/card';
 
 const gridStyle: CSSProperties = {
@@ -21,7 +9,7 @@ const gridStyle: CSSProperties = {
 };
 
 // Button属性
-const CardConfig: IFormItemConfig[] = [
+const CardConfig: Txp.IFormItemConfig[] = [
   {
     title: '卡片标题',
     dataIndex: 'title',
@@ -49,10 +37,11 @@ const CardConfig: IFormItemConfig[] = [
 
 // 渲染Button
 export const TxpCard = (
-  props: IPropsWithChild<CardProps> = {},
+  props: Txp.IPropsWithChild<CardProps> = {},
 ): JSX.Element => {
   return (
     <Card
+      className="TxpCard"
       {...props?.props}
       onClick={props.onClick}
       style={props?.style}
@@ -64,7 +53,7 @@ export const TxpCard = (
 };
 
 // 左侧预览Card
-export const PreviewCard = (props: IPreviewProps): JSX.Element => {
+export const PreviewCard = (props: Txp.IPreviewProps): JSX.Element => {
   return (
     <Card title={<strong>Card</strong>} size="small">
       <Card.Grid
@@ -91,11 +80,11 @@ export const PreviewCard = (props: IPreviewProps): JSX.Element => {
   );
 };
 
-const OwnChildren: Txp.StaticChildren[] = [
+const OwnChildren: Txp.IChild[] = [
   {
     key: 'Card_Extra',
     title: 'extra',
-    // disabled: true,
+    disabled: true,
     Container: true,
     children: [],
   },
@@ -119,4 +108,4 @@ export default {
   Style: CardStyle,
   Container: true,
   Children: OwnChildren,
-} as IAntdComp<CardProps>;
+} as Txp.IAntdComp<CardProps>;

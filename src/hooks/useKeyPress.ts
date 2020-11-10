@@ -30,7 +30,7 @@ const useKeyPress = (reset: () => void): [number] => {
   useEffect(() => {
     document.addEventListener('keydown', handleUpOrDown, false);
     return () => {
-      document.removeEventListener('keydown', handleUpOrDown, false);
+      document.removeEventListener('keydown', handleUpOrDown);
     };
   }, [handleUpOrDown]);
 

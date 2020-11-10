@@ -1,0 +1,17 @@
+.TxpButton:hover,
+.TxpCard:hover,
+.TxpCol:hover,
+.TxpForm:hover,
+.TxpFormItem:hover,
+.TxpInput:hover,
+.TxpRow:hover,
+.TxpSwitch:hover,
+.TxpTable:hover,
+.TxpText:hover
+{
+  position: relative;
+  z-index: 7;
+  cursor: pointer;
+  box-sizing: border-box !important;
+  outline: 1px dashed red;
+}

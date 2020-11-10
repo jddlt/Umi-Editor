@@ -16,8 +16,9 @@
   width: 100%;
   position: relative;
   height: calc(100vh - @Header_Height - 46px);
-  overflow: auto;
-  padding-bottom: 44px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 84px;
 }
 .saveButton {
   position: absolute;
@@ -26,6 +27,20 @@
   z-index: 5;
   transform: translateX(-50%);
   bottom: 24px;
+}
+.saveStyleButton {
+  position: absolute;
+  width: 90%;
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+  bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+.saveStyleButton > .saveStyleButtonItem {
+  width: 48%;
+  box-shadow: 0 0 4px #eee;
 }
 .empty {
   display: flex;

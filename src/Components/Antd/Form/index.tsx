@@ -1,11 +1,5 @@
 import React, { CSSProperties } from 'react';
 import { Card, Button, Form } from 'antd';
-import {
-  IFormItemConfig,
-  IPropsWithChild,
-  IPreviewProps,
-  IAntdComp,
-} from '@/Components/BaseComp/index.d';
 import { FormProps } from 'antd/lib/form';
 
 const gridStyle: CSSProperties = {
@@ -18,7 +12,7 @@ const gridStyle: CSSProperties = {
 interface CompProps extends FormProps {}
 
 // 属性
-const TxpConfig: IFormItemConfig[] = [
+const TxpConfig: Txp.IFormItemConfig[] = [
   {
     title: '表单Ref',
     dataIndex: 'form',
@@ -79,9 +73,10 @@ const TxpProps: CompProps = {
 };
 
 // 渲染Dom
-export const TxpComp = (props: IPropsWithChild<CompProps> = {}) => {
+export const TxpComp = (props: Txp.IPropsWithChild<CompProps> = {}) => {
   return (
     <Form
+      className="TxpForm"
       {...props?.props}
       labelCol={{ span: props?.props?.labelCol as number }}
       wrapperCol={{ span: props?.props?.wrapperCol as number }}
@@ -95,7 +90,7 @@ export const TxpComp = (props: IPropsWithChild<CompProps> = {}) => {
 };
 
 // 左侧预览Dom
-export const PreviewComp = (props: IPreviewProps): JSX.Element => {
+export const PreviewComp = (props: Txp.IPreviewProps): JSX.Element => {
   return (
     <Card title={<strong>Form</strong>} size="small">
       <Card.Grid
@@ -124,4 +119,4 @@ export default {
   Props: TxpProps,
   Style: TxpStyle,
   Container: true,
-} as IAntdComp<CompProps>;
+} as Txp.IAntdComp<CompProps>;

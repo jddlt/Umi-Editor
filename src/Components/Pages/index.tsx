@@ -1,18 +1,25 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { useContext } from 'react';
 import classnames from 'classnames';
 import useMove from '@/hooks/useMove';
 import useKeyPress from '@/hooks/useKeyPress';
 import { message } from 'antd';
-import { IGloableProps, IAntdComp } from '@/Components/BaseComp/index.d';
+import cloneDeep from 'lodash/cloneDeep';
 import { findCompByKey } from '@/utils/index';
 import { RenderDomConfigToReactDom } from '@/layout/RenderDomConfigToReactDom';
 import styles from './index.less';
 import AntdComp from '@/Components/Antd';
+import {
+  DomListContext,
+  SetDomListContext,
+  SetCurrentDomContext,
+} from '@/store';
 
-export default (props: IGloableProps): JSX.Element => {
+export default (): JSX.Element => {
   const [transXY, handleMouseDown, reset] = useMove();
   const [scale] = useKeyPress(reset);
-  const { domList, setDomList, current, setCurrent } = props;
+  const domList = useContext(DomListContext);
+  const setDomList = useContext(SetDomListContext);
+  const setCurrent = useContext(SetCurrentDomContext);
 
   // 拖拽结束
   const handleDragOver = function(e: React.DragEvent) {
@@ -27,14 +34,17 @@ export default (props: IGloableProps): JSX.Element => {
     const CompInfo = AntdComp[name]; // 找到组件
     const Comp = CompInfo.Comp; // 渲染Dom
     if (!Comp) return message.error(`未找到 ${name} 组件`);
-
     setDomList(r => [
       ...r,
       {
-        ...CompInfo,
+        ...cloneDeep(CompInfo),
         key: `${CompInfo.Name}_${Date.now()}`,
         title: Title(CompInfo),
-        children: CompInfo.Children || [],
+        children:
+          cloneDeep(CompInfo.Children)?.map(i => ({
+            ...i,
+            key: `${i.title}_${Date.now()}`,
+          })) || [],
       },
     ]);
   };
@@ -51,7 +61,7 @@ export default (props: IGloableProps): JSX.Element => {
         className={styles.mainBox}
         style={{
           transition: 'transform .15s',
-          transform: `translate(${transXY.x}px, ${transXY.y}px) scale(${scale})`,
+          transform: `translate3d(${transXY.x}px, ${transXY.y}px, 0) scale(${scale})`,
         }}
       >
         <header className={styles.mainBoxHeader} onMouseDown={handleMouseDown}>
@@ -77,7 +87,7 @@ export default (props: IGloableProps): JSX.Element => {
   );
 };
 
-const Title = (props: IAntdComp<any>) => {
+const Title = (props: Txp.IAntdComp<any>) => {
   return (
     <div
       style={{

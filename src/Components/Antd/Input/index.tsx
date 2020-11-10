@@ -1,11 +1,5 @@
 import React, { CSSProperties } from 'react';
-import { Card, Button, Input } from 'antd';
-import {
-  IFormItemConfig,
-  IPropsWithChild,
-  IPreviewProps,
-  IAntdComp,
-} from '@/Components/BaseComp/index.d';
+import { Card, Input } from 'antd';
 import { InputProps } from 'antd/lib/input';
 
 const gridStyle: CSSProperties = {
@@ -17,19 +11,8 @@ const gridStyle: CSSProperties = {
 // 偷懒行为
 interface CompProps extends InputProps {}
 
-// prefixCls?: string;
-//     size?: SizeType;
-//     type?: LiteralUnion<'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'text' | 'time' | 'url' | 'week', string>;
-//     onPressEnter?: React.KeyboardEventHandler<HTMLInputElement>;
-//     addonBefore?: React.ReactNode;
-//     addonAfter?: React.ReactNode;
-//     prefix?: React.ReactNode;
-//     suffix?: React.ReactNode;
-//     allowClear?: boolean;
-//     bordered?: boolean;
-
 // 属性
-const TxpConfig: IFormItemConfig[] = [
+const TxpConfig: Txp.IFormItemConfig[] = [
   {
     title: '提示文字',
     dataIndex: 'placeholder',
@@ -67,14 +50,19 @@ const TxpProps: CompProps = {
 };
 
 // 渲染Dom
-export const TxpComp = (props: IPropsWithChild<CompProps> = {}) => {
+export const TxpComp = (props: Txp.IPropsWithChild<CompProps> = {}) => {
   return (
-    <Input {...props?.props} onClick={props.onClick} style={props?.style} />
+    <Input
+      className="TxpInput"
+      {...props?.props}
+      onClick={props.onClick}
+      style={props?.style}
+    />
   );
 };
 
 // 左侧预览Dom
-export const PreviewComp = (props: IPreviewProps): JSX.Element => {
+export const PreviewComp = (props: Txp.IPreviewProps): JSX.Element => {
   return (
     <Card title={<strong>Input</strong>} size="small">
       <Card.Grid
@@ -91,32 +79,32 @@ export const PreviewComp = (props: IPreviewProps): JSX.Element => {
   );
 };
 
-const OwnChildren: Txp.StaticChildren[] = [
+const OwnChildren: Txp.IChild[] = [
   {
     key: 'Input_AddonAfter',
     title: 'addonAfter',
-    // disabled: true,
+    disabled: true,
     Container: true,
     children: [],
   },
   {
     key: 'Input_AddonBefore',
     title: 'addonBefore',
-    // disabled: true,
+    disabled: true,
     Container: true,
     children: [],
   },
   {
     key: 'Input_Pefix',
     title: 'prefix',
-    // disabled: true,
+    disabled: true,
     Container: true,
     children: [],
   },
   {
     key: 'Input_Suffix',
     title: 'suffix',
-    // disabled: true,
+    disabled: true,
     Container: true,
     children: [],
   },
@@ -133,4 +121,4 @@ export default {
   Style: TxpStyle,
   Container: false,
   Children: OwnChildren,
-} as IAntdComp<CompProps>;
+} as Txp.IAntdComp<CompProps>;

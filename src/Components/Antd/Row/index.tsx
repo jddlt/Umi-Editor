@@ -1,11 +1,5 @@
 import React, { CSSProperties } from 'react';
 import { Card, Button, Row } from 'antd';
-import {
-  IFormItemConfig,
-  IPropsWithChild,
-  IPreviewProps,
-  IAntdComp,
-} from '@/Components/BaseComp/index.d';
 import { RowProps } from 'antd/lib/row';
 
 const gridStyle: CSSProperties = {
@@ -15,7 +9,7 @@ const gridStyle: CSSProperties = {
 };
 
 // 属性
-const TxpConfig: IFormItemConfig[] = [
+const TxpConfig: Txp.IFormItemConfig[] = [
   {
     title: '栅格间隔',
     dataIndex: 'gutter',
@@ -37,16 +31,22 @@ const TxpConfig: IFormItemConfig[] = [
 ];
 
 // 渲染Dom
-export const TxpComp = (props: IPropsWithChild<RowProps> = {}) => {
+export const TxpComp = (props: Txp.IPropsWithChild<RowProps> = {}) => {
   return (
-    <Row {...props?.props} onClick={props.onClick} style={props?.style}>
+    <Row
+      className="TxpRow"
+      {...props?.props}
+      onClick={props.onClick}
+      onContextMenu={props.onContextMenu}
+      style={props?.style}
+    >
       {props?.children || props.props?.children}
     </Row>
   );
 };
 
 // 左侧预览Dom
-export const PreviewComp = (props: IPreviewProps): JSX.Element => {
+export const PreviewComp = (props: Txp.IPreviewProps): JSX.Element => {
   return (
     <Card title={<strong>Row</strong>} size="small">
       <Card.Grid
@@ -81,4 +81,4 @@ export default {
   Props: TxpProps,
   Style: TxpStyle,
   Container: true,
-} as IAntdComp<RowProps>;
+} as Txp.IAntdComp<RowProps>;

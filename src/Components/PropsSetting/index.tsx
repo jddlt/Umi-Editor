@@ -1,24 +1,49 @@
-import React, { useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Tabs, Form, Button } from 'antd';
 import styles from './index.less';
 import classNames from 'classnames';
-import { IGloableProps } from '@/Components/BaseComp/index.d';
+import {
+  DomListContext,
+  SetDomListContext,
+  CurrentDomContext,
+  SetCurrentDomContext,
+} from '@/store';
 import { findCompByKey } from '@/utils/index';
 import { renderFormItem as RenderFormItem } from '@/layout/renderFormItem';
+import { RenderStyleForm } from '@/layout/RenderStyleForm';
 const { TabPane } = Tabs;
 
-export default (props: IGloableProps): JSX.Element => {
+export default (): JSX.Element => {
   const [form] = Form.useForm();
-  const { domList, setDomList, current, setCurrent } = props;
+  const [styleForm] = Form.useForm();
+  const domList = useContext(DomListContext);
+  const setDomList = useContext(SetDomListContext);
+  const current = useContext(CurrentDomContext);
+  const setCurrent = useContext(SetCurrentDomContext);
 
   const handleSaveButtonProps = () => {
     const val = form.getFieldsValue();
     const data = [...domList];
-    findCompByKey(data, current.key, item => {
+    findCompByKey(data, current.key as string, item => {
       item.Props = { ...val };
     });
     setDomList(data);
     setCurrent({ ...current, Props: val });
+  };
+  const handleSaveButtonStyles = () => {
+    const val = styleForm.getFieldsValue();
+    console.log('val', val);
+
+    const data = [...domList];
+    findCompByKey(data, current.key as string, item => {
+      item.Style = { ...val };
+    });
+    setDomList(data);
+    setCurrent({ ...current, Style: val });
+  };
+  const handleResetButtonStyles = () => {
+    styleForm.resetFields();
+    handleSaveButtonStyles();
   };
   console.log('domList', domList);
 
@@ -34,7 +59,7 @@ export default (props: IGloableProps): JSX.Element => {
             <>
               <div className={styles.tabContainer}>
                 <Form form={form}>
-                  {current.Config.map(item => (
+                  {current.Config?.map((item: any) => (
                     <RenderFormItem key={item.dataIndex} {...item} />
                   ))}
                 </Form>
@@ -55,7 +80,36 @@ export default (props: IGloableProps): JSX.Element => {
           )}
         </TabPane>
         <TabPane tab={<span>样式微调</span>} key="styles">
-          <div className={styles.tabContainer}>样式微调</div>
+          {current.key ? (
+            <>
+              <div className={styles.tabContainer}>
+                <Form form={styleForm}>
+                  <RenderStyleForm />
+                </Form>
+              </div>
+              <div className={styles.saveStyleButton}>
+                <Button
+                  shape="round"
+                  className={styles.saveStyleButtonItem}
+                  onClick={handleResetButtonStyles}
+                >
+                  重置
+                </Button>
+                <Button
+                  type="primary"
+                  className={styles.saveStyleButtonItem}
+                  shape="round"
+                  onClick={handleSaveButtonStyles}
+                >
+                  保存
+                </Button>
+              </div>
+            </>
+          ) : (
+            <div className={classNames(styles.tabContainer, styles.empty)}>
+              找不到了 Σ( ° △ °|||)︴
+            </div>
+          )}
         </TabPane>
       </Tabs>
     </div>

@@ -1,11 +1,5 @@
 import React, { CSSProperties } from 'react';
 import { Button, Card } from 'antd';
-import {
-  IFormItemConfig,
-  IPropsWithChild,
-  IPreviewProps,
-  IAntdComp,
-} from '@/Components/BaseComp/index.d';
 import { ButtonProps } from 'antd/lib/button';
 
 const gridStyle: CSSProperties = {
@@ -15,7 +9,7 @@ const gridStyle: CSSProperties = {
 };
 
 // Button属性
-const ButtonConfig: IFormItemConfig[] = [
+const ButtonConfig: Txp.IFormItemConfig[] = [
   {
     title: '内容',
     dataIndex: 'children',
@@ -75,16 +69,22 @@ const ButtonConfig: IFormItemConfig[] = [
 ];
 
 // 渲染Button
-export const TxpButton = (props: IPropsWithChild<ButtonProps> = {}) => {
+export const TxpButton = (props: Txp.IPropsWithChild<ButtonProps> = {}) => {
   return (
-    <Button {...props?.props} onClick={props.onClick} style={props?.style}>
-      {props.children || props.props?.children}
-    </Button>
+    <span
+      onClick={props.onClick}
+      className="TxpButton"
+      style={{ display: 'inline-block', fontSize: 0 }}
+    >
+      <Button {...props?.props} onClick={props.onClick} style={props?.style}>
+        {props.children || props.props?.children}
+      </Button>
+    </span>
   );
 };
 
 // 左侧预览Button
-export const PreviewButton = (props: IPreviewProps): JSX.Element => {
+export const PreviewButton = (props: Txp.IPreviewProps): JSX.Element => {
   return (
     <Card title={<strong>Button</strong>} size="small">
       <Card.Grid
@@ -118,4 +118,4 @@ export default {
   Props: TxpButtonProps,
   Style: ButtonStyle,
   Container: false,
-} as IAntdComp<ButtonProps>;
+} as Txp.IAntdComp<ButtonProps>;

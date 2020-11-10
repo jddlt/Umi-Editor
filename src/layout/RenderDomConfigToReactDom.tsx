@@ -1,48 +1,46 @@
-import React, { useCallback, useState } from 'react';
-import { IDomItem } from '@/Components/BaseComp/index.d';
-import {
-  SortableContainer,
-  SortableElement,
-  SortEnd,
-  SortEvent,
-} from 'react-sortable-hoc';
+import React, { useCallback } from 'react';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import useContextMenu from '@/hooks/useContextMenu';
+import { createPortal } from 'react-dom';
 
 export const RenderDomConfigToReactDom = (
-  props: IDomItem<any>[],
+  props: Txp.IChild[],
   handleClick: (e: string) => void,
 ) => {
-  const [activeKey, setActiveKey] = useState<string>('');
+  const [MenuList, ContextClick] = useContextMenu();
   const loopDom = useCallback(
-    (props: IDomItem<any>[]) => {
-      return props.map(({ Comp, Props, Style, key, children }) => (
-        <Comp
-          key={key}
-          props={{
-            ...Props,
-            ...transStaticChildren((children || []).filter(item => !item.Comp)),
-          }}
-          // {}
-          style={{
-            ...Style,
-            outline:
-              activeKey === key ? '1px dashed green !important' : undefined,
-          }}
-          onClick={e => {
-            e.stopPropagation();
-            setActiveKey(key);
-            handleClick && handleClick(key);
-          }}
-        >
-          {Array.isArray(children) &&
-          children.filter(item => item.Comp)?.length ? (
-            loopDom(children.filter(item => item.Comp))
-          ) : (
-            <span
-              dangerouslySetInnerHTML={{ __html: Props?.children || '' }}
-            ></span>
-          )}
-        </Comp>
-      ));
+    (props: Txp.IChild[]) => {
+      return props.map(
+        ({ Comp, Props, Style, key, children }) =>
+          Comp && (
+            <Comp
+              key={key}
+              props={{
+                ...Props,
+                ...transStaticChildren(
+                  (children || []).filter((item: Txp.IChild) => !item.Comp),
+                ),
+                onContextMenu: (e: React.MouseEvent) => {
+                  ContextClick(e, key as string);
+                },
+              }}
+              style={Style}
+              onClick={(e: React.MouseEvent) => {
+                e.stopPropagation();
+                handleClick && handleClick(key as string);
+              }}
+            >
+              {Array.isArray(children) &&
+              children.filter(item => item.Comp)?.length ? (
+                loopDom(children.filter(item => item.Comp))
+              ) : (
+                <span
+                  dangerouslySetInnerHTML={{ __html: Props?.children || '' }}
+                ></span>
+              )}
+            </Comp>
+          ),
+      );
     },
     [props],
   );
@@ -54,6 +52,10 @@ export const RenderDomConfigToReactDom = (
     return props;
   };
   const Dom = loopDom(props);
-  console.log('Dom', Dom);
-  return Dom;
+  return (
+    <>
+      {Dom}
+      {createPortal(MenuList, document.body)}
+    </>
+  );
 };

@@ -52,7 +52,7 @@
     }
     .realContainer {
       width: 100%;
-      height: 100%;
+      height: calc(100% - 24px);
       overflow: auto;
       padding: 6px 12px;
       box-sizing: border-box;
@@ -84,12 +84,13 @@
   transition: transform 0.2s;
   z-index: 3;
 }
-.mainBoxHeader ~ div > *:hover {
-  position: relative;
-  z-index: 2;
-  cursor: pointer;
-  outline: 1px dashed red;
-}
+// .mainBoxHeader ~ div > *:hover {
+//   position: relative;
+//   z-index: 7;
+//   cursor: pointer;
+//   box-sizing: border-box !important;
+//   outline: 1px dashed red;
+// }
 .mainBoxHeader ~ div > *:active {
-  transform: scale(0.95);
+  transform: scale(0.99);
 }

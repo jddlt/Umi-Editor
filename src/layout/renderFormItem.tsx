@@ -1,8 +1,7 @@
 import React from 'react';
 import { Select, Switch, Radio, Input, Form } from 'antd';
-import { IFormItemConfig, ILabelinValue } from '@/Components/BaseComp/index.d';
 
-export const renderFormItem = (props: IFormItemConfig) => {
+export const renderFormItem = (props: Txp.IFormItemConfig) => {
   return (
     <Form.Item
       key={props.dataIndex}
@@ -21,7 +20,7 @@ export const renderFormItem = (props: IFormItemConfig) => {
   );
 };
 
-const caseType = (props: IFormItemConfig) => {
+const caseType = (props: Txp.IFormItemConfig) => {
   switch (props.type) {
     case 'Select':
       return (
@@ -40,7 +39,7 @@ const caseType = (props: IFormItemConfig) => {
     case 'Radio':
       return (
         <Radio.Group size="small" buttonStyle="solid">
-          {props.options?.map((item: string | ILabelinValue) => {
+          {props.options?.map((item: string | Txp.ILabelinValue) => {
             if (typeof item === 'string') {
               return (
                 <Radio.Button key={item} value={item}>
@@ -57,5 +56,14 @@ const caseType = (props: IFormItemConfig) => {
           })}
         </Radio.Group>
       );
+    case 'Textarea':
+      return (
+        <Input.TextArea
+          autoSize={{ minRows: 2, maxRows: 6 }}
+          placeholder={props.placeholder}
+        />
+      );
+    case 'Color':
+      return <Input type="color" />;
   }
 };

@@ -7,7 +7,7 @@ import FormItem from '@/Components/Antd/Form.Item';
 import Input from '@/Components/Antd/Input';
 import Switch from '@/Components/Antd/Switch';
 import Text from '@/Components/Antd/Text';
-import { IAntdComp } from '@/Components/BaseComp/index.d';
+import Table from '@/Components/Antd/Table';
 
 export default {
   Text,
@@ -17,6 +17,7 @@ export default {
   Col,
   Form,
   Input,
+  Table,
   'Form.Item': FormItem,
   Switch,
-} as Record<string, IAntdComp<any>>;
+} as Record<string, Txp.IAntdComp<any>>;

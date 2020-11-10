@@ -1,27 +1,32 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { Tabs, Tree, message } from 'antd';
-import { IDomItem, IGloableProps } from '@/Components/BaseComp/index.d';
 import styles from './index.less';
+import cloneDeep from 'lodash/cloneDeep';
 import { findCompByKey } from '@/utils/index';
 import AntdComp from '@/Components/Antd';
+import { DataNode } from 'antd/lib/tree';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import {
-  SortableContainer,
-  SortableElement,
-  SortEnd,
-  SortEvent,
-} from 'react-sortable-hoc';
+  DomListContext,
+  SetDomListContext,
+  SetCurrentDomContext,
+} from '@/store';
 
 const { TabPane } = Tabs;
 
-export default (props: IGloableProps) => {
-  const { domList, setDomList, setCurrent } = props;
+export default () => {
+  const domList = useContext(DomListContext);
+  const setDomList = useContext(SetDomListContext);
+  const setCurrent = useContext(SetCurrentDomContext);
+
+  const [menuShow, setMenuShow] = useState(false);
+  const [point, setPoint] = useState({ x: '0', y: '0' });
+  const rightClickKey = useRef<null | string>(null);
   function handleDragStart(e: React.DragEvent, name: string) {
     e.dataTransfer.dropEffect = 'move';
     e.dataTransfer.setData('name', name);
   }
-
   const onDrop = (info: any) => {
-    console.log(info);
     const dropKey = info.node.props.eventKey; // 掉落的目标
     const dragKey = info.dragNode.props.eventKey; // 拖拽的目标
     const isContainer = info.node.Container; // 掉落的目标是否是容器
@@ -33,10 +38,10 @@ export default (props: IGloableProps) => {
       return message.error('无法放入非容器组件中');
 
     let data: any = [...domList];
-    let dragObj: IDomItem<any> = {} as IDomItem<any>;
+    let dragObj: Txp.IChild = {} as Txp.IChild;
     findCompByKey(data, dragKey, (item, index, arr) => {
       arr.splice(index, 1);
-      dragObj = item;
+      dragObj = cloneDeep(item);
     });
 
     if (!info.dropToGap) {
@@ -58,18 +63,75 @@ export default (props: IGloableProps) => {
         item.children.unshift(dragObj);
       });
     } else {
-      let ar: IDomItem<any>[] = [];
+      let ar: Txp.IChild[] = [];
       let i: number = 0;
       findCompByKey(data, dropKey, (_, index, arr) => {
         ar = arr;
         i = index;
       });
       if (dropPosition === -1) {
+        if (ar[i].disabled) return message.error('无法放入非容器组件中');
         ar.splice(i, 0, dragObj);
       } else {
         ar.splice(i + 1, 0, dragObj);
       }
     }
+    setDomList(data);
+  };
+
+  const displayMemu = () => setMenuShow(false);
+
+  useEffect(() => {
+    document.addEventListener('click', displayMemu);
+    return () => document.removeEventListener('click', displayMemu);
+  }, []);
+
+  const MemuList = () => {
+    return (
+      <div
+        className={styles.menu}
+        style={{
+          display: menuShow ? 'block' : 'none',
+          left: point.x,
+          top: point.y,
+        }}
+      >
+        <div className={styles.menuList} onClick={copyNode}>
+          复制
+        </div>
+        <div className={styles.menuList} onClick={deleteNode}>
+          删除
+        </div>
+      </div>
+    );
+  };
+
+  const copyNode = () => {
+    if (!rightClickKey.current) return;
+    let data: any = [...domList];
+    findCompByKey(data, rightClickKey.current, (item, index, arr) => {
+      arr.splice(index, 0, cloneDeep(changeKey(item)));
+    });
+    setDomList(data);
+  };
+
+  const changeKey = (data: any, index = 0) => {
+    return {
+      ...data,
+      key: `${data.Name}_${index}${Date.now()}`,
+      children:
+        data.children?.map((item: any, index2: number) =>
+          changeKey(item, index2),
+        ) || [],
+    };
+  };
+
+  const deleteNode = () => {
+    if (!rightClickKey.current) return;
+    let data: any = [...domList];
+    findCompByKey(data, rightClickKey.current, (_, index, arr) => {
+      arr.splice(index, 1);
+    });
     setDomList(data);
   };
 
@@ -114,12 +176,17 @@ export default (props: IGloableProps) => {
               key="key"
               onDragEnter={() => {}}
               onDrop={onDrop}
+              onRightClick={({ event, node }) => {
+                event.preventDefault();
+                rightClickKey.current = String(node.key);
+                setPoint({ x: `${event.clientX}px`, y: `${event.clientY}px` });
+                setMenuShow(true);
+              }}
               onClick={(_, b) => {
-                console.log(b);
                 // @ts-ignore
                 if (b.Comp) setCurrent({ ...b });
               }}
-              treeData={domList}
+              treeData={domList as DataNode[]}
             />
           ) : (
             <div style={{ textAlign: 'center', letterSpacing: '1px' }}>
@@ -128,6 +195,7 @@ export default (props: IGloableProps) => {
           )}
         </TabPane>
       </Tabs>
+      <MemuList />
     </div>
   );
 };
