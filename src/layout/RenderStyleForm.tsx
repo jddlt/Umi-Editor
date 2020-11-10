@@ -17,6 +17,16 @@ export const RenderStyleForm = () => {
           <Input placeholder="高度" />
         </Form.Item>
       </Col>
+      <Col span={12}>
+        <Form.Item name="fontSize" label="字体">
+          <Input placeholder="大小" />
+        </Form.Item>
+      </Col>
+      <Col span={12}>
+        <Form.Item name="color" label="颜色">
+          <Input placeholder="颜色" type="color" />
+        </Form.Item>
+      </Col>
       <Col span={24}>
         <Form.Item label={<strong>外边距</strong>} />
       </Col>
@@ -65,7 +75,7 @@ export const RenderStyleForm = () => {
       </Col>
       <Col span={24}>
         <Form.Item name="position" label={<strong>定位方式</strong>}>
-          <Select defaultValue="static">
+          <Select>
             {['static', 'relative', 'absolute', 'fixed', 'sticky'].map(item => (
               <Select.Option key={item} value={item}>
                 {item}
@@ -92,6 +102,14 @@ export const RenderStyleForm = () => {
       <Col span={12}>
         <Form.Item name="right" label="Right">
           <Input placeholder="右侧" />
+        </Form.Item>
+      </Col>
+      <Col span={24}>
+        <Form.Item name="style" label={<strong>自定义</strong>}>
+          <Input.TextArea
+            autoSize={{ minRows: 2, maxRows: 6 }}
+            placeholder="自定义样式"
+          />
         </Form.Item>
       </Col>
     </Row>

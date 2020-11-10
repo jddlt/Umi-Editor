@@ -178,6 +178,7 @@ export default () => {
               onDrop={onDrop}
               onRightClick={({ event, node }) => {
                 event.preventDefault();
+                if (node.disabled) return;
                 rightClickKey.current = String(node.key);
                 setPoint({ x: `${event.clientX}px`, y: `${event.clientY}px` });
                 setMenuShow(true);

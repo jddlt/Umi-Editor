@@ -7,6 +7,8 @@ interface TextProps {
   color: string;
   lineHeight: string;
   display: 'inline' | 'line-block' | 'block';
+  onContextMenu?: () => void;
+  style: Record<keyof any, string>;
 }
 const gridStyle: CSSProperties = {
   width: '100%',
@@ -69,7 +71,8 @@ const TxpProps: Partial<CompProps> = {
 export const TxpComp = (props: Txp.IPropsWithChild<CompProps> = {}) => {
   return (
     <span
-      style={{ ...props?.props }}
+      style={{ ...props.style, ...props?.props }}
+      onContextMenu={props.props?.onContextMenu || (() => {})}
       className="TxpText"
       onClick={props?.onClick}
     >

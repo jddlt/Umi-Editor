@@ -32,24 +32,33 @@ export default (): JSX.Element => {
   };
   const handleSaveButtonStyles = () => {
     const val = styleForm.getFieldsValue();
-    console.log('val', val);
+    let myStyle = {};
+    try {
+      myStyle = eval('(' + val.style + ')');
+    } catch (err) {}
 
     const data = [...domList];
     findCompByKey(data, current.key as string, item => {
-      item.Style = { ...val };
+      delete val.style;
+      item.Style = { ...val, ...myStyle };
     });
     setDomList(data);
-    setCurrent({ ...current, Style: val });
+    setCurrent({ ...current, Style: { ...val, ...myStyle } });
   };
   const handleResetButtonStyles = () => {
     styleForm.resetFields();
     handleSaveButtonStyles();
   };
-  console.log('domList', domList);
+  // console.log('domList', domList);
 
   useEffect(() => {
     form.setFieldsValue(current.Props);
   }, [current.Props]);
+
+  useEffect(() => {
+    styleForm.resetFields();
+    styleForm.setFieldsValue(current.Style);
+  }, [current.Style]);
 
   return (
     <div className={styles['propsContainer']}>
@@ -83,7 +92,7 @@ export default (): JSX.Element => {
           {current.key ? (
             <>
               <div className={styles.tabContainer}>
-                <Form form={styleForm}>
+                <Form form={styleForm} initialValues={{ position: 'static' }}>
                   <RenderStyleForm />
                 </Form>
               </div>

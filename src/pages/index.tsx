@@ -17,13 +17,17 @@ export default () => {
   useEffect(() => {
     document.body.style.margin = '0';
   }, []);
+  const clear = () => {
+    setDomList([]);
+    setCurrent({});
+  };
   return (
     <DomListContext.Provider value={domList}>
       <SetDomListContext.Provider value={setDomList}>
         <CurrentDomContext.Provider value={current}>
           <SetCurrentDomContext.Provider value={setCurrent}>
             <div className={styles.main}>
-              <Header />
+              <Header clear={clear} />
               <div className={styles.container}>
                 <BaseCmp />
                 <Pages />
@@ -37,13 +41,13 @@ export default () => {
   );
 };
 
-const Header = () => {
+const Header = ({ clear }: { clear: () => void }) => {
   return (
     <header className={styles.header}>
       <h1>Umi-Txp-Editor</h1>
       <div>
-        <Button shape="round" style={{ marginRight: '12px' }}>
-          清除
+        <Button shape="round" style={{ marginRight: '12px' }} onClick={clear}>
+          清空
         </Button>
         <Button type="primary" shape="round">
           保存

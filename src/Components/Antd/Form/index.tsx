@@ -48,26 +48,12 @@ const TxpConfig: Txp.IFormItemConfig[] = [
     type: 'Radio',
     options: ['left', 'right'],
   },
-  {
-    title: '文本占比',
-    dataIndex: 'labelCol',
-    type: 'Input',
-    placeholder: '请填写文本占比',
-  },
-  {
-    title: '表单占比',
-    dataIndex: 'wrapperCol',
-    type: 'Input',
-    placeholder: '请填写表单占比',
-  },
 ];
 
 const TxpProps: CompProps = {
   colon: true,
   size: 'middle',
   labelAlign: 'left',
-  labelCol: 6 as any,
-  wrapperCol: 18 as any,
   layout: 'horizontal',
   form: '无用字段' as any,
 };
@@ -78,8 +64,6 @@ export const TxpComp = (props: Txp.IPropsWithChild<CompProps> = {}) => {
     <Form
       className="TxpForm"
       {...props?.props}
-      labelCol={{ span: props?.props?.labelCol as number }}
-      wrapperCol={{ span: props?.props?.wrapperCol as number }}
       onClick={props.onClick}
       style={props?.style}
       form={undefined}

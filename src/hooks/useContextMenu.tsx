@@ -52,6 +52,7 @@ const useContextMenu = () => {
   }, []);
 
   const ContextClick = (event: React.MouseEvent, key: string) => {
+    event.stopPropagation();
     event.preventDefault();
     rightClickKey.current = String(key);
     setPoint({ x: `${event.clientX}px`, y: `${event.clientY}px` });

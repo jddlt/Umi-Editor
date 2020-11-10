@@ -62,7 +62,7 @@ const TxpConfig: Txp.IFormItemConfig[] = [
 const TxpProps: CompProps = {
   size: 'middle',
   bordered: true,
-  align: 'left',
+  align: 'center',
 };
 
 // 渲染Dom
@@ -71,6 +71,16 @@ export const TxpComp = (props: Txp.IPropsWithChild<CompProps> = {}) => {
   if (concatProps.footer) {
     concatProps.footer = () => concatProps.footer;
   } else delete concatProps.footer;
+
+  let myColumns = [];
+  try {
+    myColumns = eval(('(' + props.props?.columns + ')') as any).map(
+      (i: CompProps) => ({
+        ...i,
+        align: props.props!.align,
+      }),
+    );
+  } catch (err) {}
   return (
     <div
       className="TxpTable"
@@ -83,16 +93,7 @@ export const TxpComp = (props: Txp.IPropsWithChild<CompProps> = {}) => {
         scroll={{ x: 'max-content' }}
         bordered
         {...concatProps}
-        columns={
-          props.props?.columns
-            ? eval(('(' + props.props.columns + ')') as any).map(
-                (i: CompProps) => ({
-                  ...i,
-                  align: props.props!.align,
-                }),
-              )
-            : []
-        }
+        columns={props.props?.columns ? myColumns : []}
         dataSource={[{ name: '江' }]}
       />
     </div>
@@ -119,11 +120,12 @@ export const PreviewComp = (props: Txp.IPreviewProps): JSX.Element => {
         }}
       >
         <Table
-          rowKey="index"
+          rowKey="name"
           size="small"
+          pagination={false}
           bordered
-          columns={[{ title: '姓名', dataIndex: name }]}
-          dataSource={[]}
+          columns={[{ title: '作者', dataIndex: 'name', align: 'center' }]}
+          dataSource={[{ name: 'Mrpzx' }]}
         />
       </Card.Grid>
     </Card>
