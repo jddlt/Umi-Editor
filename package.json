@@ -6,7 +6,8 @@
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
-    "git": "git add . && git commit -m 'commit' && git push",
+    "git": "git add . && yarn push && git commit -m",
+    "push": "git push",
     "test:coverage": "umi-test --coverage"
   },
   "gitHooks": {
