@@ -21,15 +21,18 @@ export default (): JSX.Element => {
   const current = useContext(CurrentDomContext);
   const setCurrent = useContext(SetCurrentDomContext);
 
+  // 保存属性配置
   const handleSaveButtonProps = () => {
     const val = form.getFieldsValue();
     const data = [...domList];
-    findCompByKey(data, current.key as string, item => {
+    findCompByKey(data, current.key!, item => {
       item.Props = { ...val };
     });
     setDomList(data);
     setCurrent({ ...current, Props: val });
   };
+
+  // 保存样式配置
   const handleSaveButtonStyles = () => {
     const val = styleForm.getFieldsValue();
     let myStyle = {};
@@ -38,13 +41,15 @@ export default (): JSX.Element => {
     } catch (err) {}
 
     const data = [...domList];
-    findCompByKey(data, current.key as string, item => {
+    findCompByKey(data, current.key!, item => {
       delete val.style;
       item.Style = { ...val, ...myStyle };
     });
     setDomList(data);
     setCurrent({ ...current, Style: { ...val, ...myStyle } });
   };
+
+  // 重置样式
   const handleResetButtonStyles = () => {
     styleForm.resetFields();
     handleSaveButtonStyles();

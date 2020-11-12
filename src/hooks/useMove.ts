@@ -5,6 +5,12 @@ interface ICoordinate {
   y: number;
 }
 
+/**
+ *  拖动钩子
+ *  @return {object}  坐标：{x, y}
+ *  @return {function} onMouseDown 需要挂载的mouseDown事件
+ *  @return {function} Reset 重置事件
+ */
 const useMove = (): [
   { x: number; y: number },
   (e: React.MouseEvent) => void,

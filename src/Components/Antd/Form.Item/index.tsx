@@ -88,8 +88,8 @@ export const TxpComp = (props: Txp.IPropsWithChild<CompProps> = {}) => {
       className="TxpFormItem"
       // @ts-ignore
       onClick={props.onClick}
-      labelCol={{ span: Number(props?.props?.labelCol) as number }}
-      wrapperCol={{ span: Number(props?.props?.wrapperCol) as number }}
+      labelCol={{ span: Number(props?.props?.labelCol) }}
+      wrapperCol={{ span: Number(props?.props?.wrapperCol) }}
       {...props?.props}
       style={props?.style}
     >

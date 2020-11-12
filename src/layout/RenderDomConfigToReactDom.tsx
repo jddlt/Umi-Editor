@@ -21,13 +21,13 @@ export const RenderDomConfigToReactDom = (
                   (children || []).filter((item: Txp.IChild) => !item.Comp),
                 ),
                 onContextMenu: (e: React.MouseEvent) => {
-                  ContextClick(e, key as string);
+                  ContextClick(e, key!);
                 },
               }}
               style={Style}
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
-                handleClick && handleClick(key as string);
+                handleClick && handleClick(key!);
               }}
             >
               {Array.isArray(children) &&
